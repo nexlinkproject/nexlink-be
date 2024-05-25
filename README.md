@@ -156,9 +156,9 @@ Status: 200
         "users": [
             {
                 "id": 1,
-                "username": "johndoe",
-                "email": "johndoe@example.com",
-                "fullName": "John Doe",
+                "username": "Johnsmith",
+                "email": "Johnsmith@example.com",
+                "fullName": "John Smith",
                 "role": "user",
                 "createdAt": "2024-05-24T00:00:00.000Z",
                 "updatedAt": "2024-05-24T00:00:00.000Z"
@@ -202,9 +202,9 @@ Status: 200
     "data": {
         "user": {
             "id": 1,
-            "username": "johndoe",
-            "email": "johndoe@example.com",
-            "fullName": "John Doe",
+            "username": "Johnsmith",
+            "email": "Johnsmith@example.com",
+            "fullName": "John Smith",
             "createdAt": "2024-05-24T00:00:00.000Z",
             "updatedAt": "2024-05-24T00:00:00.000Z"
         }
@@ -432,9 +432,9 @@ Status: 200
         "users": [
             {
                 "id": 1,
-                "username": "johndoe",
-                "email": "johndoe@example.com",
-                "fullName": "John Doe",
+                "username": "Johnsmith",
+                "email": "Johnsmith@example.com",
+                "fullName": "John Smith",
                 "role": "user",
                 "createdAt": "2024-05-24T00:00:00.000Z",
                 "updatedAt": "2024-05-24T00:00:00.000Z"
