@@ -23,12 +23,12 @@
                             "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"fullName\": \"Test User\",\n    \"role\": \"admin\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/auth/register",
+                            "raw": "http://localhost:3000/auth/register",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "auth",
                                 "register"
@@ -51,12 +51,12 @@
                             "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/auth/login",
+                            "raw": "http://localhost:3000/auth/login",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "auth",
                                 "login"
@@ -69,12 +69,12 @@
                     "request": {
                         "method": "POST",
                         "url": {
-                            "raw": "http://localhost:8080/auth/logout",
+                            "raw": "http://localhost:3000/auth/logout",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "auth",
                                 "logout"
@@ -97,12 +97,12 @@
                             "raw": "{\n    \"email\": \"test@example.com\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/auth/forgot-password",
+                            "raw": "http://localhost:3000/auth/forgot-password",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "auth",
                                 "forgot-password"
@@ -125,12 +125,12 @@
                             "raw": "{\n    \"token\": \"reset-token\",\n    \"newPassword\": \"newpassword123\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/auth/reset-password",
+                            "raw": "http://localhost:3000/auth/reset-password",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "auth",
                                 "reset-password"
@@ -148,12 +148,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/users",
+                            "raw": "http://localhost:3000/users",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "users"
                             ]
@@ -165,12 +165,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/users/1",
+                            "raw": "http://localhost:3000/users/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "users",
                                 "1"
@@ -193,12 +193,12 @@
                             "raw": "{\n    \"username\": \"newuser\",\n    \"email\": \"new@example.com\",\n    \"fullName\": \"New User\",\n    \"role\": \"user\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/users",
+                            "raw": "http://localhost:3000/users",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "users"
                             ]
@@ -220,12 +220,12 @@
                             "raw": "{\n    \"username\": \"updateduser\",\n    \"email\": \"updated@example.com\",\n    \"fullName\": \"Updated User\",\n    \"role\": \"user\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/users/1",
+                            "raw": "http://localhost:3000/users/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "users",
                                 "1"
@@ -238,12 +238,12 @@
                     "request": {
                         "method": "DELETE",
                         "url": {
-                            "raw": "http://localhost:8080/users/1",
+                            "raw": "http://localhost:3000/users/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "users",
                                 "1"
@@ -261,12 +261,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/projects",
+                            "raw": "http://localhost:3000/projects",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "projects"
                             ]
@@ -278,12 +278,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/projects/1",
+                            "raw": "http://localhost:3000/projects/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "projects",
                                 "1"
@@ -306,12 +306,12 @@
                             "raw": "{\n    \"name\": \"New Project\",\n    \"description\": \"Project description\",\n    \"status\": \"active\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"deadline\": \"2024-12-31\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/projects",
+                            "raw": "http://localhost:3000/projects",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "projects"
                             ]
@@ -333,12 +333,12 @@
                             "raw": "{\n    \"name\": \"Updated Project\",\n    \"description\": \"Updated description\",\n    \"status\": \"completed\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"deadline\": \"2024-12-31\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/projects/1",
+                            "raw": "http://localhost:3000/projects/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "projects",
                                 "1"
@@ -351,12 +351,12 @@
                     "request": {
                         "method": "DELETE",
                         "url": {
-                            "raw": "http://localhost:8080/projects/1",
+                            "raw": "http://localhost:3000/projects/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "projects",
                                 "1"
@@ -374,12 +374,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/tasks",
+                            "raw": "http://localhost:3000/tasks",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "tasks"
                             ]
@@ -391,12 +391,12 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:8080/tasks/1",
+                            "raw": "http://localhost:3000/tasks/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "tasks",
                                 "1"
@@ -419,12 +419,12 @@
                             "raw": "{\n    \"title\": \"New Task\",\n    \"description\": \"Task description\",\n    \"status\": \"in-progress\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"priority\": \"high\",\n    \"projectId\": 1,\n    \"assignedTo\": 1\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/tasks",
+                            "raw": "http://localhost:3000/tasks",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "tasks"
                             ]
@@ -446,12 +446,12 @@
                             "raw": "{\n    \"title\": \"Updated Task\",\n    \"description\": \"Updated description\",\n    \"status\": \"completed\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"priority\": \"medium\",\n    \"projectId\": 1,\n    \"assignedTo\": 1\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:8080/tasks/1",
+                            "raw": "http://localhost:3000/tasks/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "tasks",
                                 "1"
@@ -464,12 +464,12 @@
                     "request": {
                         "method": "DELETE",
                         "url": {
-                            "raw": "http://localhost:8080/tasks/1",
+                            "raw": "http://localhost:3000/tasks/1",
                             "protocol": "http",
                             "host": [
                                 "localhost"
                             ],
-                            "port": "8080",
+                            "port": "3000",
                             "path": [
                                 "tasks",
                                 "1"
