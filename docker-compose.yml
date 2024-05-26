@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      - PORT=8080
+      - DB_HOST=your-database-host
+      - DB_USER=your-database-user
+      - DB_PASSWORD=your-database-password
+      - DB_NAME=your-database-name
+      - GOOGLE_CLOUD_PROJECT=your-google-cloud-project
+      - ML_MODEL_LINK=your-ml-model-link
+      - SECRET_MANAGER_ID=your-secret-manager-id
+      - JWT_SECRET=your-jwt-secret
