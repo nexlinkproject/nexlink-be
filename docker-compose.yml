@@ -4,14 +4,14 @@ services:
   web:
     build: .
     ports:
-      - '8080:8080'
+      - '3000:3000'
     environment:
-      - PORT=8080
-      - DB_HOST=your-database-host
-      - DB_USER=your-database-user
-      - DB_PASSWORD=your-database-password
-      - DB_NAME=your-database-name
-      - GOOGLE_CLOUD_PROJECT=your-google-cloud-project
-      - ML_MODEL_LINK=your-ml-model-link
-      - SECRET_MANAGER_ID=your-secret-manager-id
-      - JWT_SECRET=your-jwt-secret
+      - PORT=3000
+      - DB_HOST=34.133.84.238
+      - DB_USER=postgres
+      - DB_PASSWORD=ElUQ-&rfF?tO?N$D
+      - DB_NAME=postgres
+      - GOOGLE_CLOUD_PROJECT=nexlink-trial
+      - ML_MODEL_LINK=ml-model-link
+      - SECRET_MANAGER_ID=nexlink-trial-secret
+      - JWT_SECRET=vPhQUO5yFYg7l6dGE4Qa5shH27Fubzt425XmHiTYgdgSmsZIhnXf8s4iGhPT6ka

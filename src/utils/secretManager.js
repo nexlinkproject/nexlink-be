@@ -8,8 +8,7 @@ const loadSecrets = async () => {
     });
 
     const payload = version.payload.data.toString('utf8');
-    const secrets = JSON.parse(payload);
-    process.env.JWT_SECRET = secrets.JWT_SECRET;
+    return payload;
 };
 
 module.exports = { loadSecrets };

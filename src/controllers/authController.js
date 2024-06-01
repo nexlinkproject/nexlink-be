@@ -33,9 +33,9 @@ const logout = (req, res, next) => {
 
 const register = async (req, res, next) => {
     try {
-        const { username, email, password, fullName, role } = req.body;
+        const { username, email, password, fullName, } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ username, email, password: hashedPassword, fullName, role });
+        const user = await User.create({ username, email, password: hashedPassword, fullName });
         response(res, 201, 'User registered successfully', { user });
     } catch (error) {
         next(error);

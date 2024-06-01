@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { errorHandler } = require('./utils/errorHandler');
-const response = require('./utils/response');
 
 const app = express();
 

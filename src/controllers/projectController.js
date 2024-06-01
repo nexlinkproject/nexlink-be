@@ -101,7 +101,7 @@ const generateSchedule = async (req, res, next) => {
         const { projectId } = req.params;
         const { deadline, tasks } = req.body;
 
-        // Implement the scheduling logic
+        // Generate Schedule
         let startDate = new Date();
         tasks.forEach(task => {
             task.startDate = new Date(startDate);
