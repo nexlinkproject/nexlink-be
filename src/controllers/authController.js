@@ -1,10 +1,9 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const { JWT_SECRET } = require('../config');
 const response = require('../utils/response');
-const { sendResetEmail } = require('../utils/emailService');
+const { Op } = require('sequelize');
 
 const login = async (req, res, next) => {
     try {
@@ -42,35 +41,15 @@ const register = async (req, res, next) => {
     }
 };
 
-const forgotPassword = async (req, res, next) => {
-    try {
-        const { email } = req.body;
-        const user = await User.findOne({ where: { email } });
-
-        if (!user) {
-            return response(res, 404, 'User not found');
-        }
-
-        const resetToken = crypto.randomBytes(20).toString('hex');
-        const resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-        await user.update({ resetPasswordToken: resetToken, resetPasswordExpires });
-
-        await sendResetEmail(user.email, resetToken);
-        response(res, 200, 'Password reset email sent');
-    } catch (error) {
-        next(error);
-    }
-};
-
 const resetPassword = async (req, res, next) => {
     try {
-        const { token, newPassword } = req.body;
-        const user = await User.findOne({
-            where: {
-                resetPasswordToken: token,
-                resetPasswordExpires: { [Op.gt]: Date.now() }
-            }
+        const { newPassword, token } = req.body;
+
+        const user = await User.findOne({ 
+            where: { 
+                resetPasswordToken: token, 
+                resetPasswordExpires: { [Op.gt]: new Date() }
+            } 
         });
 
         if (!user) {
@@ -86,4 +65,4 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
-module.exports = { login, logout, register, forgotPassword, resetPassword };
+module.exports = { login, logout, register, resetPassword };
