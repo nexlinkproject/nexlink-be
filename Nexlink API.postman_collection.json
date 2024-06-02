@@ -24,12 +24,12 @@
 							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"fullName\": \"Test User\",\n    \"role\": \"admin\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/auth/register",
+							"raw": "http://localhost:/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"auth",
 								"register"
@@ -53,12 +53,12 @@
 							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/auth/login",
+							"raw": "http://localhost:/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"auth",
 								"login"
@@ -73,12 +73,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/auth/logout",
+							"raw": "http://localhost:/auth/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"auth",
 								"logout"
@@ -102,12 +102,12 @@
 							"raw": "{\n    \"token\": \"reset-token\",\n    \"newPassword\": \"newpassword123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/auth/reset-password",
+							"raw": "http://localhost:/auth/reset-password",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"auth",
 								"reset-password"
@@ -127,12 +127,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users",
+							"raw": "http://localhost:/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"users"
 							]
@@ -146,12 +146,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/1",
+							"raw": "http://localhost:/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"users",
 								"1"
@@ -175,12 +175,12 @@
 							"raw": "{\n    \"username\": \"updateduser\",\n    \"email\": \"updated@example.com\",\n    \"fullName\": \"Updated User\",\n    \"role\": \"user\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/1",
+							"raw": "http://localhost:/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"users",
 								"1"
@@ -195,12 +195,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/1",
+							"raw": "http://localhost:/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"users",
 								"1"
@@ -220,12 +220,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/projects",
+							"raw": "http://localhost:/projects",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"projects"
 							]
@@ -239,12 +239,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/projects/1",
+							"raw": "http://localhost:/projects/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"projects",
 								"1"
@@ -268,12 +268,12 @@
 							"raw": "{\n    \"name\": \"New Project\",\n    \"description\": \"Project description\",\n    \"status\": \"active\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"deadline\": \"2024-12-31\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/projects",
+							"raw": "http://localhost:/projects",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"projects"
 							]
@@ -296,12 +296,12 @@
 							"raw": "{\n    \"name\": \"Updated Project\",\n    \"description\": \"Updated description\",\n    \"status\": \"completed\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"deadline\": \"2024-12-31\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/projects/1",
+							"raw": "http://localhost:/projects/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"projects",
 								"1"
@@ -316,12 +316,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/projects/1",
+							"raw": "http://localhost:/projects/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"projects",
 								"1"
@@ -341,12 +341,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/tasks",
+							"raw": "http://localhost:/tasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"tasks"
 							]
@@ -360,12 +360,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/tasks/1",
+							"raw": "http://localhost:/tasks/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"tasks",
 								"1"
@@ -389,12 +389,12 @@
 							"raw": "{\n    \"title\": \"New Task\",\n    \"description\": \"Task description\",\n    \"status\": \"in-progress\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"priority\": \"high\",\n    \"projectId\": 1,\n    \"assignedTo\": 1\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/tasks",
+							"raw": "http://localhost:/tasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"tasks"
 							]
@@ -417,12 +417,12 @@
 							"raw": "{\n    \"title\": \"Updated Task\",\n    \"description\": \"Updated description\",\n    \"status\": \"completed\",\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-12-31\",\n    \"priority\": \"medium\",\n    \"projectId\": 1,\n    \"assignedTo\": 1\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/tasks/1",
+							"raw": "http://localhost:/tasks/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"tasks",
 								"1"
@@ -437,12 +437,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/tasks/1",
+							"raw": "http://localhost:/tasks/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "",
 							"path": [
 								"tasks",
 								"1"
