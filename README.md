@@ -15,8 +15,8 @@ Default Url: `"coming soon"`
 | User Endpoints |
 | -- | -- | -- |
 | `/users/` | GET | Get all user profile |
-| `/users/{id}` | GET | Get user profile by id |
 | `/users/{id}` | PUT | Update user profile by id |
+| `/users/{id}` | GET | Get user profile by id |
 | `/users/{id}` | DELETE | DELETE user profile |
 | Project Endpoints |
 | -- | -- | -- |
@@ -135,6 +135,33 @@ Status: 200
 
 ```
 
+### Reset Password
+
+**Endpoint**
+
+`POST /auth/reset-password`
+
+**Headers**
+
+- Content-Type: `<application/json>`
+
+**Body Parameters**
+
+- newPassword: `<string>`
+- token: `<string>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "Password has been reset"
+}
+
+```
+
 ## User Routes
 
 ### Get Users
@@ -162,10 +189,10 @@ Status: 200
                 "username": "Johnsmith",
                 "email": "Johnsmith@example.com",
                 "fullName": "John Smith",
-                "role": "user",
                 "createdAt": "2024-05-24T00:00:00.000Z",
                 "updatedAt": "2024-05-24T00:00:00.000Z"
             }
+            // more users...
         ]
     }
 }
@@ -177,6 +204,42 @@ Status: 200
 **Endpoint**
 
 `PUT /users/:id`
+
+**Headers**
+
+- Authorization: Bearer: `<JWT_TOKEN>`
+
+**Path Parameters**
+
+- id: `<integer>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "User updated successfully",
+    "data": {
+        "user": {
+            "id": 1,
+            "username": "Johnsmith",
+            "email": "Johnsmith@example.com",
+            "fullName": "John Smith",
+            "createdAt": "2024-05-24T00:00:00.000Z",
+            "updatedAt": "2024-05-24T00:00:00.000Z"
+        }
+    }
+}
+
+```
+
+### GET User
+
+**Endpoint**
+
+`GET /users/:id`
 
 **Headers**
 
@@ -215,6 +278,33 @@ Status: 200
 }
 
 ```
+
+### DELETE User
+
+**Endpoint**
+
+`PUT /users/:id`
+
+**Headers**
+
+- Authorization: Bearer: `<JWT_TOKEN>`
+
+**Path Parameters**
+
+- id: `<integer>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "User deleted successfully"
+}
+
+```
+
 ## Project Routes
 
 ### Get Projects
@@ -248,7 +338,7 @@ Status: 200
                 "createdAt": "2024-05-24T00:00:00.000Z",
                 "updatedAt": "2024-05-24T00:00:00.000Z"
             }
-            // more projects...
+            // more projects
         ]
     }
 }
