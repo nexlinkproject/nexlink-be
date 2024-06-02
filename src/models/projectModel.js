@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../utils/db');
+const User = require('./userModel');
 
 const Project = sequelize.define('Project', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
@@ -12,5 +13,8 @@ const Project = sequelize.define('Project', {
     createdAt: { type: DataTypes.DATE },
     updatedAt: { type: DataTypes.DATE },
 });
+
+Project.belongsToMany(User, { through: 'ProjectUser' });
+User.belongsToMany(Project, { through: 'ProjectUser' });
 
 module.exports = Project;

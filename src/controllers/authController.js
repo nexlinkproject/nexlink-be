@@ -32,15 +32,17 @@ const logout = (req, res, next) => {
 
 const register = async (req, res, next) => {
     try {
-        const { username, email, password, fullName, } = req.body;
+        const { username, email, password, fullName } = req.body;
 
         const userMatch = await User.findOne({ where: { email } });
         if (userMatch) {
-            return response(res, 400, 'User already registered!');
+            return response(res, 400, 'Email already registered!');
         }
         
         const hashedPassword = await bcrypt.hash(password, 10);
+        
         const user = await User.create({ username, email, password: hashedPassword, fullName });
+        
         response(res, 201, 'User registered successfully', { user });
     } catch (error) {
         response(res, 500, 'Internal Server Error', { error: error.message });
