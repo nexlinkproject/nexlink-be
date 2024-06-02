@@ -9,8 +9,8 @@ const Project = sequelize.define('Project', {
     startDate: { type: DataTypes.DATE, allowNull: false },
     endDate: { type: DataTypes.DATE, allowNull: false },
     deadline: { type: DataTypes.DATE, allowNull: false },
-    createdAt: { type: DataTypes.DATE, allowNull: false },
-    updatedAt: { type: DataTypes.DATE, allowNull: false },
+    createdAt: { type: DataTypes.DATE },
+    updatedAt: { type: DataTypes.DATE },
 });
 
 module.exports = Project;

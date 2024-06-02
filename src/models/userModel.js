@@ -7,8 +7,8 @@ const User = sequelize.define('User', {
     email: { type: DataTypes.STRING, primaryKey: true, allowNull: false, unique: true },
     fullName: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
-    createdAt: { type: DataTypes.DATE, allowNull: false },
-    updatedAt: { type: DataTypes.DATE, allowNull: false },
+    createdAt: { type: DataTypes.DATE },
+    updatedAt: { type: DataTypes.DATE },
     resetPasswordToken: { type: DataTypes.STRING },
     resetPasswordExpires: { type: DataTypes.DATE },
 });
