@@ -10,6 +10,5 @@ router.delete('/:id', deleteProject);
 router.get('/:id/users', getProjectUsers);
 router.post('/:id/users', addUserToProject);
 router.delete('/:id/users/:userId', removeUserFromProject);
-router.post('/:projectId/generate-schedule', generateSchedule);
 
 module.exports = router;

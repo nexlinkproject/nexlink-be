@@ -96,27 +96,4 @@ const removeUserFromProject = async (req, res, next) => {
     }
 };
 
-const generateSchedule = async (req, res, next) => {
-    try {
-        const { projectId } = req.params;
-        const { deadline, tasks } = req.body;
-
-        // Generate Schedule
-        let startDate = new Date();
-        tasks.forEach(task => {
-            task.startDate = new Date(startDate);
-            task.endDate = new Date(startDate.setDate(startDate.getDate() + task.estimatedDuration));
-            startDate = new Date(task.endDate.setDate(task.endDate.getDate() + 1));
-        });
-
-        response(res, 200, 'Schedule generated successfully', {
-            projectId: parseInt(projectId),
-            deadline,
-            tasks,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-module.exports = { getProjects, getProjectById, createProject, updateProject, deleteProject, getProjectUsers, addUserToProject, removeUserFromProject, generateSchedule };
+module.exports = { getProjects, getProjectById, createProject, updateProject, deleteProject, getProjectUsers, addUserToProject, removeUserFromProject };
