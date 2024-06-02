@@ -6,7 +6,7 @@ const getUsers = async (req, res, next) => {
         const users = await User.findAll();
         response(res, 200, 'Users retrieved successfully', { users });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -18,7 +18,7 @@ const getUserById = async (req, res, next) => {
         }
         response(res, 200, 'User retrieved successfully', { user });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -31,7 +31,7 @@ const updateUser = async (req, res, next) => {
         const updatedUser = await User.findByPk(req.params.id);
         response(res, 200, 'User updated successfully', { updatedUser });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -43,7 +43,7 @@ const deleteUser = async (req, res, next) => {
         }
         response(res, 200, 'User deleted successfully');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 

@@ -6,7 +6,7 @@ const getProjects = async (req, res, next) => {
         const projects = await Project.findAll();
         response(res, 200, 'Projects retrieved successfully', { projects });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -18,7 +18,7 @@ const getProjectById = async (req, res, next) => {
         }
         response(res, 200, 'Project retrieved successfully', { project });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -27,7 +27,7 @@ const createProject = async (req, res, next) => {
         const project = await Project.create(req.body);
         response(res, 201, 'Project created successfully', { project });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -40,7 +40,7 @@ const updateProject = async (req, res, next) => {
         const updatedProject = await Project.findByPk(req.params.id);
         response(res, 200, 'Project updated successfully', { updatedProject });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -52,7 +52,7 @@ const deleteProject = async (req, res, next) => {
         }
         response(res, 200, 'Project deleted successfully');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -64,7 +64,7 @@ const getProjectUsers = async (req, res, next) => {
         }
         response(res, 200, 'Project users retrieved successfully', { users: project.Users });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -78,7 +78,7 @@ const addUserToProject = async (req, res, next) => {
         await project.addUser(user);
         response(res, 200, 'User added to project successfully');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -92,7 +92,7 @@ const removeUserFromProject = async (req, res, next) => {
         await project.removeUser(user);
         response(res, 200, 'User removed from project successfully');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 

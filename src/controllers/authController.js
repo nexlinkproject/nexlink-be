@@ -11,18 +11,18 @@ const login = async (req, res, next) => {
         const user = await User.findOne({ where: { email } });
 
         if (!user) {
-            return response(res, 404, 'User not found');
+            return response(res, 404, 'You are not registered!');
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return response(res, 400, 'Invalid credentials');
+            return response(res, 400, 'Your email or password is incorrect!');
         }
 
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
         response(res, 200, 'Login successful', { token });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -42,10 +42,8 @@ const register = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ username, email, password: hashedPassword, fullName });
         response(res, 201, 'User registered successfully', { user });
-
-
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -69,7 +67,7 @@ const resetPassword = async (req, res, next) => {
 
         response(res, 200, 'Password has been reset');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 

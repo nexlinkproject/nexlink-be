@@ -6,7 +6,7 @@ const getTasks = async (req, res, next) => {
         const tasks = await Task.findAll();
         response(res, 200, 'Tasks retrieved successfully', { tasks });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -18,7 +18,7 @@ const getTaskById = async (req, res, next) => {
         }
         response(res, 200, 'Task retrieved successfully', { task });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -27,7 +27,7 @@ const createTask = async (req, res, next) => {
         const task = await Task.create(req.body);
         response(res, 201, 'Task created successfully', { task });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -40,7 +40,7 @@ const updateTask = async (req, res, next) => {
         const updatedTask = await Task.findByPk(req.params.id);
         response(res, 200, 'Task updated successfully', { updatedTask });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -52,7 +52,7 @@ const deleteTask = async (req, res, next) => {
         }
         response(res, 200, 'Task deleted successfully');
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -61,7 +61,7 @@ const getProjectTasks = async (req, res, next) => {
         const tasks = await Task.findAll({ where: { ProjectId: req.params.projectId } });
         response(res, 200, 'Project tasks retrieved successfully', { tasks });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
@@ -70,7 +70,7 @@ const getUserTasks = async (req, res, next) => {
         const tasks = await Task.findAll({ where: { UserId: req.params.userId } });
         response(res, 200, 'User tasks retrieved successfully', { tasks });
     } catch (error) {
-        next(error);
+        response(res, 500, 'Internal Server Error', { error: error.message });
     }
 };
 
