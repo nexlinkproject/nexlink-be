@@ -11,10 +11,13 @@ Default Url: `"coming soon"`
 | `/auth/register` | POST | New user register |
 | `/auth/login` | POST | User login |
 | `/auth/logout` | POST | User logout |
+| `/auth/reset-password` | POST | User logout |
 | User Endpoints |
 | -- | -- | -- |
-| `/users/profile` | PUT | Update user profile |
-| `/users/profile` | GET | Get user profile |
+| `/users/` | GET | Get all user profile |
+| `/users/{id}` | GET | Get user profile by id |
+| `/users/{id}` | PUT | Update user profile by id |
+| `/users/{id}` | DELETE | DELETE user profile |
 | Project Endpoints |
 | -- | -- | -- |
 | `/projects` | GET | Get all projects |
