@@ -12,7 +12,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/', require('./routes/index')); // Load routes from index.js in routes directory
+app.use('/', require('./routes/index'));
 
 const middlewares = require('./utils/middleware');
 app.use(middlewares.notFound);
