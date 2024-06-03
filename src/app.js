@@ -1,18 +1,27 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { errorHandler } = require('./utils/errorHandler');
+const express = require('express')
+const helmet = require('helmet')
+const morgan = require('morgan')
 
-const app = express();
+const cors = require('cors')
+const http = require('http')
 
-app.use(bodyParser.json());
+const bodyParser = require('body-parser')
+const middlewares = require('./utils/middleware')
 
-// Routes
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/users', require('./routes/userRoutes'));
-app.use('/projects', require('./routes/projectRoutes'));
-app.use('/tasks', require('./routes/taskRoutes'));
+const app = express()
+const httpServer = http.createServer(app)
 
-// Error Handler
-app.use(errorHandler);
+app.use(morgan('dev'))
+app.use(helmet())
+app.use(cors())
+app.use(bodyParser.json())
 
-module.exports = app;
+app.use('/auth', require('./routes/authRoutes'))
+app.use('/users', require('./routes/userRoutes'))
+app.use('/projects', require('./routes/projectRoutes'))
+app.use('/tasks', require('./routes/taskRoutes'))
+
+app.use(middlewares.notFound)
+app.use(middlewares.errorHandler)
+
+module.exports = httpServer
