@@ -5,8 +5,8 @@ const { PORT } = require('./config')
 // const { loadSecrets } = require('./utils/secretManager');
 // loadSecrets().then(() => {
 connectDB().then(() => {
-  httpServer.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on:${PORT}`)
   })
 }).catch((error) => {
   console.error('Failed to start the server:', error)

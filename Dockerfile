@@ -1,8 +1,8 @@
-FROM node:20 as dependencies
+FROM node:18
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package.json .
+COPY package*.json ./
 
 COPY . .
 RUN npm install
