@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "1f28e805-93d3-4156-af39-5cf2bb46fedc",
-		"name": "Nexlink API",
+		"name": "local-test-api",
 		"description": "Collection for testing all endpoints of the Nexlink API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
