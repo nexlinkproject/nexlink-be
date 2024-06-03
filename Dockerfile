@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:18.6
 
 WORKDIR /app
 
@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "src/server.js"]
+CMD ["npm", "run", "start"]
