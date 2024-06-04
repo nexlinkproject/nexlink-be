@@ -70,7 +70,7 @@ const resetPassword = async (req, res, next) => {
     })
 
     if (!user) {
-      return response(res, 400, 'Password reset token is invalid or has expired')
+      return response(res, 403, 'Password reset token is invalid or has expired')
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10)

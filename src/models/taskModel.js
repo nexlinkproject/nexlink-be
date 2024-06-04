@@ -12,7 +12,7 @@ const Task = sequelize.define('Task', {
   endDate: { type: DataTypes.DATE, allowNull: false },
   ProjectId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: Project,
       key: 'id'
@@ -20,7 +20,7 @@ const Task = sequelize.define('Task', {
   },
   assignedTo: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: User,
       key: 'id'

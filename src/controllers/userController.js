@@ -39,11 +39,14 @@ const updateUser = async (req, res, next) => {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
 
-    if (email && email !== user.email) {
-      const emailMatch = await User.findOne({ where: { email } })
-      if (emailMatch) {
-        return response(res, 400, 'Email is already used!')
-      }
+    const emailMatch = await User.findOne({ where: { email } })
+
+    if (email === user.email) {
+        return response(res, 400, 'Fill other email')
+    }
+
+    if (emailMatch) {
+      return response(res, 400, 'Email is already used!')
     }
 
     const [updated] = await User.update(req.body, { where: { id: userId } })

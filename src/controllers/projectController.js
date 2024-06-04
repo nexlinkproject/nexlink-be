@@ -128,12 +128,12 @@ const removeUserFromProject = async (req, res, next) => {
     }
 
     if (!user) {
-      return response(res, 404, `User with ID: ${req.params.userId} not found or not registered`)
+      return response(res, 404, `User with ID: ${req.params.userId} not found or not registered ${user}`)
     }
 
     const isUserExist = await project.hasUser(user)
     if (!isUserExist) {
-      return response(res, 400, `${user.fullName} is already removed from the project`)
+      return response(res, 400, `${user.fullName} not in the project`)
     }
 
     await project.removeUser(user)
