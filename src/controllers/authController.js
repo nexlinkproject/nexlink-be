@@ -1,7 +1,7 @@
 const { Users } = require('../models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { generateTokens } = require('../utils/jwt')
+// const { generateTokens } = require('../utils/jwt')
 const { v4: uuidv4 } = require('uuid')
 const { response } = require('../utils/middleware')
 const { Op } = require('sequelize')
@@ -51,11 +51,11 @@ const register = async (req, res, next) => {
 
     const user = await Users.create({ username, email, password: hashedPassword, fullName })
 
-    const jti = uuidv4()
-    const { refreshToken } = generateTokens(user, jti)
-    const hashedToken = await bcrypt.hash(refreshToken, 10)
+    // const jti = uuidv4()
+    // const { refreshToken } = generateTokens(user, jti)
+    // const hashedToken = await bcrypt.hash(refreshToken, 10)
     
-    await Tokens.create({ id: jti, hashedToken, userId })
+    // await Tokens.create({ id: jti, hashedToken, userId })
 
     response(res, 201, 'Users registered successfully', { user })
   } catch (error) {
