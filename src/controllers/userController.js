@@ -1,9 +1,9 @@
-const { User } = require('../models')
+const { Users } = require('../models')
 const { response } = require('../utils/middleware')
 
 const getUsers = async (req, res, next) => {
   try {
-    const users = await User.findAll()
+    const users = await Users.findAll()
     if (users.length === 0) {
       return response(res, 404, 'No users found')
     }
@@ -17,11 +17,11 @@ const getUsers = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id)
+    const user = await Users.findByPk(req.params.id)
     if (!user) {
-      return response(res, 404, `User with ID: ${req.params.id} not found`)
+      return response(res, 404, `Users with ID: ${req.params.id} not found`)
     }
-    response(res, 200, `User ${user.fullName} retrieved successfully`, { user })
+    response(res, 200, `Users ${user.fullName} retrieved successfully`, { user })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
@@ -34,12 +34,12 @@ const updateUser = async (req, res, next) => {
     const userId = req.params.id
     const { email } = req.body
 
-    const user = await User.findByPk(userId)
+    const user = await Users.findByPk(userId)
     if (!user) {
-      return response(res, 404, `User with ID: ${userId} not found`)
+      return response(res, 404, `Users with ID: ${userId} not found`)
     }
 
-    const emailMatch = await User.findOne({ where: { email } })
+    const emailMatch = await Users.findOne({ where: { email } })
 
     if (email === user.email) {
         return response(res, 400, 'Fill other email')
@@ -49,13 +49,13 @@ const updateUser = async (req, res, next) => {
       return response(res, 400, 'Email is already used!')
     }
 
-    const [updated] = await User.update(req.body, { where: { id: userId } })
+    const [updated] = await Users.update(req.body, { where: { id: userId } })
     if (!updated) {
-      return response(res, 404, `User with ID: ${userId} not found`)
+      return response(res, 404, `Users with ID: ${userId} not found`)
     }
 
-    const updatedUser = await User.findByPk(userId)
-    response(res, 200, `User ${user.fullName} updated successfully`, { updatedUser })
+    const updatedUser = await Users.findByPk(userId)
+    response(res, 200, `Users ${user.fullName} updated successfully`, { updatedUser })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
@@ -65,12 +65,12 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id)
-    const deleted = await User.destroy({ where: { id: req.params.id } })
+    const user = await Users.findByPk(req.params.id)
+    const deleted = await Users.destroy({ where: { id: req.params.id } })
     if (!deleted) {
-      return response(res, 404, `User with ID: ${req.params.id} not found`)
+      return response(res, 404, `Users with ID: ${req.params.id} not found`)
     }
-    response(res, 200, `User ${user.fullName} deleted successfully`)
+    response(res, 200, `Users ${user.fullName} deleted successfully`)
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)

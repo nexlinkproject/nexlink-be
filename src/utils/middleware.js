@@ -34,11 +34,10 @@ const authenticate = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET)
     req.user = decoded
-    next()
+    return next()
   } catch (ex) {
     response(res, 400, 'Invalid token.')
   }
-  return next
 }
 
 module.exports = { notFound, response, errorHandler, authenticate }

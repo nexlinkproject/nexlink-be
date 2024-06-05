@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
-const User = require('./userModel')
-const Project = require('./projectModel')
+const Users = require('./usersModel')
+const Projects = require('./projectsModel')
 
-const Task = sequelize.define('Task', {
+const Tasks = sequelize.define('Task', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
   title: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.STRING, allowNull: false },
@@ -14,7 +14,7 @@ const Task = sequelize.define('Task', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: Project,
+      model: Projects,
       key: 'id'
     }
   },
@@ -22,7 +22,7 @@ const Task = sequelize.define('Task', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: User,
+      model: Users,
       key: 'id'
     }
   },
@@ -30,4 +30,4 @@ const Task = sequelize.define('Task', {
   updatedAt: { type: DataTypes.DATE }
 })
 
-module.exports = Task
+module.exports = Tasks

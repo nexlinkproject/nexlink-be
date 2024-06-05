@@ -1,11 +1,11 @@
-const { Project, User } = require('../models')
+const { Projects, Users } = require('../models')
 const { response } = require('../utils/middleware')
 
 const getProjects = async (req, res, next) => {
   try {
-    const projects = await Project.findAll()
+    const projects = await Projects.findAll()
     if (projects.length === 0) {
-      return response(res, 404, 'No Project found')
+      return response(res, 404, 'No Projects found')
     }
     response(res, 200, 'All projects retrieved successfully', { projects })
   } catch (error) {
@@ -17,9 +17,9 @@ const getProjects = async (req, res, next) => {
 
 const getProjectById = async (req, res, next) => {
   try {
-    const project = await Project.findByPk(req.params.id)
+    const project = await Projects.findByPk(req.params.id)
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} was not found`)
+      return response(res, 404, `Projects with ID: ${req.params.id} was not found`)
     }
     response(res, 200, `${project.name} retrieved successfully`, { project })
   } catch (error) {
@@ -31,7 +31,7 @@ const getProjectById = async (req, res, next) => {
 
 const createProject = async (req, res, next) => {
   try {
-    const project = await Project.create(req.body)
+    const project = await Projects.create(req.body)
     response(res, 201, `${project.name} created successfully`, { project })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
@@ -42,12 +42,12 @@ const createProject = async (req, res, next) => {
 
 const updateProject = async (req, res, next) => {
   try {
-    const project = await Project.findByPk(req.params.id)
-    const [updated] = await Project.update(req.body, { where: { id: req.params.id } })
+    const project = await Projects.findByPk(req.params.id)
+    const [updated] = await Projects.update(req.body, { where: { id: req.params.id } })
     if (!updated) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+      return response(res, 404, `Projects with ID: ${req.params.id} not found`)
     }
-    const updatedProject = await Project.findByPk(req.params.id)
+    const updatedProject = await Projects.findByPk(req.params.id)
     response(res, 200, `${project.name} updated successfully`, { updatedProject })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
@@ -58,10 +58,10 @@ const updateProject = async (req, res, next) => {
 
 const deleteProject = async (req, res, next) => {
   try {
-    const project = await Project.findByPk(req.params.id)
-    const deleted = await Project.destroy({ where: { id: req.params.id } })
+    const project = await Projects.findByPk(req.params.id)
+    const deleted = await Projects.destroy({ where: { id: req.params.id } })
     if (!deleted) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+      return response(res, 404, `Projects with ID: ${req.params.id} not found`)
     }
     response(res, 200, `${project.name} deleted successfully`)
   } catch (error) {
@@ -73,14 +73,14 @@ const deleteProject = async (req, res, next) => {
 
 const getProjectUsers = async (req, res, next) => {
   try {
-    const project = await Project.findByPk(req.params.id, { include: User })
+    const project = await Projects.findByPk(req.params.id, { include: Users })
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found or not created`)
+      return response(res, 404, `Projects with ID: ${req.params.id} not found or not created`)
     }
     if (!project.Users || project.Users.length === 0) {
       return response(res, 404, `No users found for ${project.name}`)
     }
-    response(res, 200, 'Project users retrieved successfully', { users: project.Users })
+    response(res, 200, 'Projects users retrieved successfully', { users: project.Users })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
@@ -93,15 +93,15 @@ const addUserToProject = async (req, res, next) => {
     const projectId = req.params.id
     const userId = req.body.userId
 
-    const project = await Project.findByPk(projectId)
-    const user = await User.findByPk(userId)
+    const project = await Projects.findByPk(projectId)
+    const user = await Users.findByPk(userId)
 
     if (!project) {
-      return response(res, 404, `Project with ID: ${projectId} not found or not created`)
+      return response(res, 404, `Projects with ID: ${projectId} not found or not created`)
     }
 
     if (!user) {
-      return response(res, 404, `User with ID: ${userId} not found or not registered`)
+      return response(res, 404, `Users with ID: ${userId} not found or not registered`)
     }
 
     const isUserAdded = await project.hasUser(user)
@@ -120,15 +120,15 @@ const addUserToProject = async (req, res, next) => {
 
 const removeUserFromProject = async (req, res, next) => {
   try {
-    const project = await Project.findByPk(req.params.id)
-    const user = await User.findByPk(req.params.userId)
+    const project = await Projects.findByPk(req.params.id)
+    const user = await Users.findByPk(req.params.userId)
 
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found or not created`)
+      return response(res, 404, `Projects with ID: ${req.params.id} not found or not created`)
     }
 
     if (!user) {
-      return response(res, 404, `User with ID: ${req.params.userId} not found or not registered ${user}`)
+      return response(res, 404, `Users with ID: ${req.params.userId} not found or not registered ${user}`)
     }
 
     const isUserExist = await project.hasUser(user)

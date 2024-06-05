@@ -6,9 +6,9 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   dialect: 'postgres'
 })
 
-const User = require('./userModel')
-const Project = require('./projectModel')
-const Task = require('./taskModel')
+const Users = require('./usersModel')
+const Projects = require('./projectsModel')
+const Tasks = require('./tasksModel')
 
 const connectDB = async () => {
   try {
@@ -19,4 +19,4 @@ const connectDB = async () => {
   }
 }
 
-module.exports = { connectDB, sequelize, User, Project, Task }
+module.exports = { connectDB, sequelize, Users, Projects, Tasks }

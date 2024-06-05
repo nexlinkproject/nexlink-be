@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
-const User = require('./userModel')
+const Users = require('./usersModel')
 
-const Project = sequelize.define('Project', {
+const Projects = sequelize.define('Project', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
   name: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.STRING, allowNull: false },
@@ -14,7 +14,7 @@ const Project = sequelize.define('Project', {
   updatedAt: { type: DataTypes.DATE }
 })
 
-Project.belongsToMany(User, { through: 'ProjectUser' })
-User.belongsToMany(Project, { through: 'ProjectUser' })
+Projects.belongsToMany(Users, { through: 'ProjectUser' })
+Users.belongsToMany(Projects, { through: 'ProjectUser' })
 
-module.exports = Project
+module.exports = Projects
