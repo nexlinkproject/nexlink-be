@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const { JWT_ACCESS_SECRET } = require('../config')
 
 const  generateAccessToken = (user) => {
-  console.log(user, 'this user');
   return jwt.sign({ userId: user.id }, JWT_ACCESS_SECRET, {
     expiresIn: '1y',
   });

@@ -1,81 +1,87 @@
-const { Users } = require('../models')
-const { response } = require('../utils/middleware')
+const userService = require('../services/userService');
+const { response } = require('../utils/middleware');
+const { validate: uuidValidate } = require('uuid')
 
 const getUsers = async (req, res, next) => {
   try {
-    const users = await Users.findAll()
+    const users = await userService.findAllUsers();
     if (users.length === 0) {
-      return response(res, 404, 'No users found')
+      return response(res, 404, 'No users found');
     }
-    response(res, 200, 'All users retrieved successfully', { users })
+    response(res, 200, 'All users retrieved successfully', { users });
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
 
 const getUserById = async (req, res, next) => {
   try {
-    const user = await Users.findByPk(req.params.id)
-    if (!user) {
-      return response(res, 404, `Users with ID: ${req.params.id} not found`)
+    if (!uuidValidate(req.params.id)) {
+      return response(res, 404, `Users with ID: ${req.params.id} was not found`)
     }
-    response(res, 200, `Users ${user.fullName} retrieved successfully`, { user })
+    const user = await userService.findUserById(req.params.id);
+    if (!user) {
+      return response(res, 404, `Users with ID: ${req.params.id} was not found`);
+    }
+    response(res, 200, 'Users retrieved successfully', { user });
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
 
 const updateUser = async (req, res, next) => {
   try {
-    const userId = req.params.id
-    const { email } = req.body
-
-    const user = await Users.findByPk(userId)
-    if (!user) {
+    if (!uuidValidate(req.params.id)) {
       return response(res, 404, `Users with ID: ${userId} not found`)
     }
+    const userId = req.params.id;
+    const { email } = req.body;
+    
+    const user = await userService.findUserById(userId);
+    if (!user) {
+      return response(res, 404, `Users with ID: ${userId} not found`);
+    }
 
-    const emailMatch = await Users.findOne({ where: { email } })
-
+    const emailMatch = await userService.findUserByEmail(email);
     if (email === user.email) {
-        return response(res, 400, 'Fill other email')
+      return response(res, 400, 'Email is already used!');
     }
 
     if (emailMatch) {
-      return response(res, 400, 'Email is already used!')
+      return response(res, 400, 'Fill other email');
     }
 
-    const [updated] = await Users.update(req.body, { where: { id: userId } })
+    const [updated] = await userService.updateUser(userId, req.body);
     if (!updated) {
-      return response(res, 404, `Users with ID: ${userId} not found`)
+      return response(res, 404, `Users with ID: ${userId} not found`);
     }
 
-    const updatedUser = await Users.findByPk(userId)
-    response(res, 200, `Users ${user.fullName} updated successfully`, { updatedUser })
+    const updatedUser = await userService.findUserById(userId);
+    response(res, 200, 'Users updated successfully', { updatedUser });
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = await Users.findByPk(req.params.id)
-    const deleted = await Users.destroy({ where: { id: req.params.id } })
+    const user = await userService.findUserById(req.params.id);
+    const deleted = await userService.deleteUser(req.params.id);
     if (!deleted) {
-      return response(res, 404, `Users with ID: ${req.params.id} not found`)
+      return response(res, 404, `Users with ID: ${req.params.id} not found`);
     }
-    response(res, 200, `Users ${user.fullName} deleted successfully`)
+    response(res, 200, 'Users deleted successfully');
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
 
-module.exports = { getUsers, getUserById, updateUser, deleteUser }
+module.exports = { getUsers, getUserById, updateUser, deleteUser };

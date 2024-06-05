@@ -6,13 +6,4 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   dialect: 'postgres'
 })
 
-const connectDB = async () => {
-  try {
-    await sequelize.authenticate()
-    console.log('Database connected...')
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
-}
-
-module.exports = { connectDB, sequelize }
+module.exports = { sequelize }
