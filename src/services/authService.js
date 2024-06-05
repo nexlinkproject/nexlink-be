@@ -1,14 +1,13 @@
-const { Users, Tokens } = require('../models');
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
+const { Users, Tokens } = require('../models')
+const { Op } = require('sequelize')
 
 const findUserByEmail = async (email) => {
-  return Users.findOne({ where: { email } });
-};
+  return Users.findOne({ where: { email } })
+}
 
 const createUser = async (userData) => {
-  return Users.create(userData);
-};
+  return Users.create(userData)
+}
 
 const findUserByResetToken = async (token) => {
   return Users.findOne({
@@ -16,24 +15,24 @@ const findUserByResetToken = async (token) => {
       resetPasswordToken: token,
       resetPasswordExpires: { [Op.gt]: new Date() }
     }
-  });
-};
+  })
+}
 
 const updateUserPassword = async (user, hashedPassword) => {
-  return user.update({ password: hashedPassword, resetPasswordToken: null, resetPasswordExpires: null });
-};
+  return user.update({ password: hashedPassword, resetPasswordToken: null, resetPasswordExpires: null })
+}
 
 const createToken = async (tokenData) => {
-  return Tokens.create(tokenData);
-};
+  return Tokens.create(tokenData)
+}
 
 const findRefreshToken = async (jti, userId) => {
-    return Tokens.findOne({
-        where: {
-          id: jti,
-          userId: userId,
-        },
-      });
+  return Tokens.findOne({
+    where: {
+      id: jti,
+      userId
     }
-      
-module.exports = { findUserByEmail, createUser, findUserByResetToken, updateUserPassword, createToken, findRefreshToken };
+  })
+}
+
+module.exports = { findUserByEmail, createUser, findUserByResetToken, updateUserPassword, createToken, findRefreshToken }

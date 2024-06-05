@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { JWT_ACCESS_SECRET } = require('../config')
-const authService = require('../services/authService');
-
+const authService = require('../services/authService')
+const bcrypt = require('bcryptjs')
 
 const response = (res, statusCode, message, data = {}) => {
   res.status(statusCode).json({
@@ -27,41 +27,39 @@ const errorHandler = (err, req, res, next) => {
 }
 
 const authenticate = async (req, res, next) => {
-  const authHeader = req.header('Authorization');
+  const authHeader = req.header('Authorization')
   if (!authHeader) {
-    return response(res, 401, 'Access denied. No token provided.');
+    return response(res, 401, 'Access denied. No token provided.')
   }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(' ')[1]
   if (!token) {
-    return response(res, 401, 'Access denied. No token provided.');
+    return response(res, 401, 'Access denied. No token provided.')
   }
 
-  console.log('Token received:', token); // Log the token
+  console.log('Token received:', token)
 
   try {
-    const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
-    const { userId, jti } = decoded;
+    const decoded = jwt.verify(token, JWT_ACCESS_SECRET)
+    const { userId, jti } = decoded
 
-    // Fetch the hashed token from the database using jti and userId
-    const storedToken = await authService.findRefreshToken(jti, userId);
+    const storedToken = await authService.findRefreshToken(jti, userId)
     if (!storedToken) {
-      return response(res, 400, 'Invalid token.');
+      return response(res, 400, 'Invalid token.')
     }
     console.loh(`Stored Token:${storedToken}`)
 
-    // Compare the provided token with the stored hashed token
-    const isMatch = await bcrypt.compare(token, storedToken.hashedToken);
+    const isMatch = await bcrypt.compare(token, storedToken.hashedToken)
     if (!isMatch) {
-      return response(res, 400, 'Invalid token.');
+      return response(res, 400, 'Invalid token.')
     }
 
-    req.user = decoded;
-    return next();
+    req.user = decoded
+    return next()
   } catch (error) {
-    console.log(error);
-    return response(res, 400, 'Invalid token.');
+    console.log(error)
+    return response(res, 400, 'Invalid token.')
   }
-};
+}
 
 module.exports = { notFound, response, errorHandler, authenticate }

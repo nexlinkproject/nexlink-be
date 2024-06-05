@@ -27,10 +27,10 @@ const syncDatabase = async () => {
     await Tasks.sync()
     await Tokens.sync()
     await ProjectUser.sync()
-console.log('All models were synchronized successfully.');
+    console.log('All models were synchronized successfully.')
   } catch (error) {
-    console.error('Error syncing database & tables:', error);
+    console.error('Error syncing database & tables:', error)
   }
-};
+}
 
 module.exports = { connectDB, sequelize, Users, Projects, Tasks, Tokens, syncDatabase }

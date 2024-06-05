@@ -1,31 +1,31 @@
-const { Tasks, Projects, Users } = require('../models');
+const { Tasks } = require('../models')
 
 const findAllTasks = async () => {
-  return Tasks.findAll();
-};
+  return Tasks.findAll()
+}
 
 const findTaskById = async (id) => {
-  return Tasks.findByPk(id);
-};
+  return Tasks.findByPk(id)
+}
 
 const createTask = async (taskData) => {
-  return Tasks.create(taskData);
-};
+  return Tasks.create(taskData)
+}
 
 const updateTask = async (id, taskData) => {
-  return Tasks.update(taskData, { where: { id } });
-};
+  return Tasks.update(taskData, { where: { id } })
+}
 
 const deleteTask = async (id) => {
-  return Tasks.destroy({ where: { id } });
-};
+  return Tasks.destroy({ where: { id } })
+}
 
 const findProjectTasks = async (projectId) => {
-  return Tasks.findAll({ where: { ProjectId: projectId } });
-};
+  return Tasks.findAll({ where: { ProjectId: projectId } })
+}
 
 const findUserTasks = async (userId) => {
-  return Tasks.findAll({ where: { assignedTo: userId } });
-};
+  return Tasks.findAll({ where: { assignedTo: userId } })
+}
 
-module.exports = { findAllTasks, findTaskById, createTask, updateTask, deleteTask, findProjectTasks, findUserTasks };
+module.exports = { findAllTasks, findTaskById, createTask, updateTask, deleteTask, findProjectTasks, findUserTasks }
