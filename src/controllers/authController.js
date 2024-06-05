@@ -65,7 +65,7 @@ const register = async (req, res, next) => {
 
     await authService.createToken({ id: jti, hashedToken, userId: user.id })
 
-    response(res, 201, 'Users registered successfully', { user })
+    response(res, 201, 'User registered successfully', { user })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
