@@ -2,7 +2,7 @@ const { Users } = require('../models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 // const { generateTokens } = require('../utils/jwt')
-const { v4: uuidv4 } = require('uuid')
+// const { v4: uuidv4 } = require('uuid')
 const { response } = require('../utils/middleware')
 const { Op } = require('sequelize')
 
