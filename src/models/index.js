@@ -16,13 +16,17 @@ const TasksUsers = require('./tasksUsersModel')
 Projects.belongsToMany(Users, { through: 'ProjectsUsers', foreignKey: 'projectId' });
 Users.belongsToMany(Projects, { through: 'ProjectsUsers', foreignKey: 'userId' });
 Tasks.belongsToMany(Users, { through: 'TasksUsers', foreignKey: 'taskId' });
-Users.belongsToMany(Tasks, { through: 'TasksUsers', foreignKey: 'UserId' });
+Users.belongsToMany(Tasks, { through: 'TasksUsers', foreignKey: 'userId' });
 ProjectsUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 ProjectsUsers.belongsTo(Projects, { foreignKey: 'projectId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 TasksUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 TasksUsers.belongsTo(Tasks, { foreignKey: 'taskId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 Tokens.belongsTo(Users, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' });
 Users.hasMany(Tokens, { foreignKey: 'userId', as: 'tokens' });
+
+
+Tasks.belongsTo(Projects, { foreignKey: 'taskId' });
+Projects.hasMany(Tasks, { foreignKey: 'projectId' });
 
 const connectDB = async () => {
   try {

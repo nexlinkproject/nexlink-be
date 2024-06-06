@@ -48,11 +48,11 @@ const updateUser = async (req, res, next) => {
 
     const emailMatch = await userService.findUserByEmail(email)
     if (email === user.email) {
-      return response(res, 400, 'Email is already used!')
+      return response(res, 400, 'Fill other email')
     }
 
     if (emailMatch) {
-      return response(res, 400, 'Fill other email')
+      return response(res, 400, 'Email is already used!')
     }
 
     const [updated] = await userService.updateUser(userId, req.body)
@@ -79,6 +79,7 @@ const deleteUser = async (req, res, next) => {
     if (!userExist) {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
+    await userService.deleteUser(userId)
     response(res, 200, 'User deleted successfully')
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
