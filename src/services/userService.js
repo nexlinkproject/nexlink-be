@@ -17,8 +17,7 @@ const updateUser = async (id, userData) => {
 }
 
 const deleteUser = async (id) => {
-  const user = await Users.findByPk(id)
-  return await user.destroy()
+  return Users.destroy({ where: { id } })
 }
 
 module.exports = {

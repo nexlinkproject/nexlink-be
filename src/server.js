@@ -1,10 +1,10 @@
 const httpServer = require('./app')
-const { syncDatabase } = require('./models')
+const { connectDB } = require('./models')
 const { PORT } = require('./config')
 // Remove for using Secret Manager on Production
 // const { loadSecrets } = require('./utils/secretManager');
 // loadSecrets().then(() => {
-syncDatabase().then(() => {
+  connectDB().then(() => {
   httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on:${PORT}`)
   })

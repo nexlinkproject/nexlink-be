@@ -19,13 +19,13 @@ const getUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Users with ID: ${req.params.id} was not found`)
+      return response(res, 404, `User with ID: ${req.params.id} was not found`)
     }
     const user = await userService.findUserById(req.params.id)
     if (!user) {
-      return response(res, 404, `Users with ID: ${req.params.id} was not found`)
+      return response(res, 404, `User with ID: ${req.params.id} was not found`)
     }
-    response(res, 200, 'Users retrieved successfully', { user })
+    response(res, 200, 'User retrieved successfully', { user })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
@@ -37,13 +37,13 @@ const updateUser = async (req, res, next) => {
   try {
     const userId = req.params.id
     if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Users with ID: ${userId} not found`)
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
     const { email } = req.body
 
     const user = await userService.findUserById(userId)
     if (!user) {
-      return response(res, 404, `Users with ID: ${userId} not found`)
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
 
     const emailMatch = await userService.findUserByEmail(email)
@@ -57,11 +57,11 @@ const updateUser = async (req, res, next) => {
 
     const [updated] = await userService.updateUser(userId, req.body)
     if (!updated) {
-      return response(res, 404, `Users with ID: ${userId} not found`)
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
 
     const updatedUser = await userService.findUserById(userId)
-    response(res, 200, 'Users updated successfully', { updatedUser })
+    response(res, 200, 'User updated successfully', { updatedUser })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)
@@ -71,11 +71,15 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const deleted = await userService.deleteUser(req.params.id)
-    if (!deleted) {
-      return response(res, 404, `Users with ID: ${req.params.id} not found`)
+    const userId = req.params.id
+    if (!uuidValidate(userId)) {
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
-    response(res, 200, 'Users deleted successfully')
+    const userExist = await userService.findUserById(userId)
+    if (!userExist) {
+      return response(res, 404, `User with ID: ${userId} not found`)
+    }
+    response(res, 200, 'User deleted successfully')
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)

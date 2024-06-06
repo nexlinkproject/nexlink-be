@@ -8,7 +8,7 @@ router.post('/', createProject)
 router.put('/:id', updateProject)
 router.delete('/:id', deleteProject)
 router.get('/:id/users', getProjectUsers)
-router.post('/:id/users', addUserToProject)
-router.delete('/:id/users/:userId', removeUserFromProject)
+router.post('/:projectId/users/:userId', addUserToProject)
+router.delete('/:projectId/users/:userId', removeUserFromProject)
 
 module.exports = router

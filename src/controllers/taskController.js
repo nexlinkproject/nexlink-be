@@ -1,4 +1,5 @@
 const taskService = require('../services/taskService')
+const userService = require('../services/userService')
 const { response } = require('../utils/middleware')
 const { v4: uuidv4, validate: uuidValidate } = require('uuid')
 
@@ -83,9 +84,9 @@ const deleteTask = async (req, res, next) => {
 
 const getProjectTasks = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `No tasks found for project with ID: ${req.params.projectId}`)
-    }
+    // if (!uuidValidate(req.params.id)) {
+    //   return response(res, 404, `Project with ID: ${req.params.projectId} not found`)
+    // }
     const tasks = await taskService.findProjectTasks(req.params.projectId)
     if (!tasks) {
       return response(res, 404, `No tasks found for project with ID: ${req.params.projectId}`)
@@ -100,10 +101,11 @@ const getProjectTasks = async (req, res, next) => {
 
 const getUserTasks = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `No tasks found for user with ID: ${req.params.userId}`)
-    }
-    const tasks = await taskService.findUserTasks(req.params.userId)
+    // if (!uuidValidate(req.params.id)) {
+    //   return response(res, 404, `User with ID: ${req.params.userId} not found`)
+    // }
+    const { userId } = req.params
+    const tasks = await taskService.findUserTasks(userId)
     if (!tasks) {
       return response(res, 404, `No tasks found for user with ID: ${req.params.userId}`)
     }
@@ -115,4 +117,58 @@ const getUserTasks = async (req, res, next) => {
   }
 }
 
-module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks }
+const addUserToTask = async (req, res, next) => {
+  try {
+    const { taskId, userId } = req.params;
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} not found`)
+    }
+    if (!uuidValidate(userId)) {
+      return response(res, 404, `User with ID: ${userId} not found`)
+    }
+    const task = await taskService.findTaskById(taskId)
+    const user = await userService.findUserById(userId)
+    if (!task) {
+      return response(res, 404, `Task with ID: ${taskId} not found or not created`)
+    }
+    if (!user) {
+      return response(res, 404, `User with ID: ${userId} not found or not registered`)
+    }
+    const isUserAdded = await taskService.isUserInTask(taskId, userId);
+    if (isUserAdded) {
+      return response(res, 400, `${user.fullName} is already added to the task`)
+    }
+    const TaskUserData = { taskId, userId, id: uuidv4() }
+    const addTaskUser = await taskService.addUserToTask(TaskUserData)
+    response(res, 200, 'User added to task successfully', { addTaskUser })
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
+const removeUserFromTask = async (req, res, next) => {
+  try {
+    const { taskId, userId } = req.params
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} not found`)
+    }
+    if (!uuidValidate(userId)) {
+      return response(res, 404, `User with ID: ${userId} not found`)
+    }
+    const user = await userService.findUserById(userId)
+    // const isUserAdded = await taskService.isUserInTask(taskId, userId);
+    // if (!isUserAdded) {
+    //   return response(res, 404, `${user.fullName} not in this task`)
+    // }
+    const task = await taskService.removeUserFromTask(taskId, userId)
+    response(res, 200, 'User removed from task successfully', { task })
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
+module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask }

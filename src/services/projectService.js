@@ -1,4 +1,4 @@
-const { Projects, Users } = require('../models')
+const { Projects, Users, ProjectsUsers } = require('../models')
 
 const findAllProjects = async () => {
   return Projects.findAll()
@@ -21,17 +21,23 @@ const deleteProject = async (id) => {
 }
 
 const findProjectUsers = async (id) => {
-  return Projects.findByPk(id, { include: Users })
-}
+  return Projects.findByPk(id, { include: Users });
+};
 
-const addUserToProject = async (projectId, userId) => {
-  const project = await Projects.findByPk(projectId)
-  const user = await Users.findByPk(userId)
-  if (project && user) {
-    await project.addUser(user)
-    return project
-  }
-  throw new Error('Project or User not found')
+const isUserInProject = async (projectId, userId) => {
+  const project = await Projects.findByPk(projectId, {
+    include: {
+      model: Users,
+      where: { id: userId },
+      required: false
+    }
+  });
+  
+  return project && project.Users.length > 0;
+};
+
+const addUserToProject = async (projectUserData) => {
+  return ProjectsUsers.create(projectUserData)
 }
 
 const removeUserFromProject = async (projectId, userId) => {
@@ -52,5 +58,6 @@ module.exports = {
   deleteProject,
   findProjectUsers,
   addUserToProject,
-  removeUserFromProject
+  removeUserFromProject,
+  isUserInProject
 }

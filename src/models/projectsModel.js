@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
-const Users = require('./usersModel')
 
 const Projects = sequelize.define('Project', {
   id: { type: DataTypes.UUID, primaryKey: true, allowNull: false },
@@ -13,8 +12,5 @@ const Projects = sequelize.define('Project', {
   createdAt: { type: DataTypes.DATE },
   updatedAt: { type: DataTypes.DATE }
 })
-
-Projects.belongsToMany(Users, { through: 'ProjectUser' })
-Users.belongsToMany(Projects, { through: 'ProjectUser' })
 
 module.exports = Projects
