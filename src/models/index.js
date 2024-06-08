@@ -27,8 +27,8 @@ TasksUsers.belongsTo(Tasks, { foreignKey: 'taskId', allowNull: false, onDelete: 
 Tokens.belongsTo(Users, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
 Users.hasMany(Tokens, { foreignKey: 'userId', as: 'tokens' })
 // One-To-Many relationships through Tasks and Projects
-Tasks.belongsTo(Projects, { foreignKey: 'taskId' })
-Projects.hasMany(Tasks, { foreignKey: 'projectId' })
+Tasks.belongsTo(Projects, { foreignKey: 'projectId' })
+Projects.hasMany(Tasks, { foreignKey: 'taskId' })
 
 const connectDB = async () => {
   try {
