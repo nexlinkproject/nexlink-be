@@ -6,6 +6,6 @@ const { login, logout, register, resetPassword } = require('../controllers/authC
 router.post('/login', login)
 router.post('/logout', authenticate, logout)
 router.post('/register', register)
-router.put('/reset-password', resetPassword)
+router.put('/reset-password', authenticate, resetPassword)
 
 module.exports = router

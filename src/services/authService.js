@@ -1,5 +1,4 @@
 const { Users, Tokens } = require('../models')
-const { Op } = require('sequelize')
 
 const findUserByEmail = async (email) => {
   return Users.findOne({ where: { email } })
@@ -9,13 +8,8 @@ const createUser = async (userData) => {
   return Users.create(userData)
 }
 
-const findUserByResetToken = async (token) => {
-  return Users.findOne({
-    where: {
-      resetPasswordToken: token,
-      resetPasswordExpires: { [Op.gt]: new Date() }
-    }
-  })
+const findUserById = async (id) => {
+  return Users.findOne({ where: { id } })
 }
 
 const updateUserPassword = async (user, hashedPassword) => {
@@ -26,13 +20,12 @@ const createToken = async (tokenData) => {
   return Tokens.create(tokenData)
 }
 
-const findRefreshToken = async (jti, userId) => {
+const findRefreshToken = async (userId) => {
   return Tokens.findOne({
     where: {
-      id: jti,
       userId
     }
   })
 }
 
-module.exports = { findUserByEmail, createUser, findUserByResetToken, updateUserPassword, createToken, findRefreshToken }
+module.exports = { findUserByEmail, createUser, findUserById, updateUserPassword, createToken, findRefreshToken }

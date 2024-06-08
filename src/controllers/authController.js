@@ -22,11 +22,9 @@ const login = async (req, res, next) => {
 
     const jti = uuidv4()
     const { accessToken, refreshToken } = generateTokens(user, jti)
-    await authService.addRefreshTokenToWhitelist({
-      jti,
-      refreshToken,
-      userId: user.id
-    })
+    const hashedToken = await bcrypt.hash(refreshToken, 10)
+
+    await authService.createToken({ id: jti, hashedToken, userId: user.id })
 
     response(res, 200, 'Login successful', { accessToken, refreshToken })
   } catch (error) {
@@ -60,7 +58,6 @@ const register = async (req, res, next) => {
 
     const jti = uuidv4()
     const { refreshToken } = generateTokens(user, jti)
-    console.log(`Receive token:${refreshToken}`)
     const hashedToken = await bcrypt.hash(refreshToken, 10)
 
     await authService.createToken({ id: jti, hashedToken, userId: user.id })
@@ -75,12 +72,13 @@ const register = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   try {
-    const { newPassword, token } = req.body
+    const { userId } = req.user
+    const { newPassword } = req.body
 
-    const user = await authService.findUserByResetToken(token)
+    const user = await authService.findUserById(userId)
 
     if (!user) {
-      return response(res, 403, 'Password reset token is invalid or has expired')
+      return response(res, 403, 'User not found')
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10)

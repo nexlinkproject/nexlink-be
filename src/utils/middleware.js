@@ -41,16 +41,11 @@ const authenticate = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_ACCESS_SECRET)
-    const { userId, jti } = decoded
+    const { userId } = decoded
+    console.log(decoded)
 
-    const storedToken = await authService.findRefreshToken(jti, userId)
-    if (!storedToken) {
-      return response(res, 400, 'Invalid token.')
-    }
-    console.loh(`Stored Token:${storedToken}`)
-
-    const isMatch = await bcrypt.compare(token, storedToken.hashedToken)
-    if (!isMatch) {
+    const storedToken = await authService.findRefreshToken(userId)
+    if (!storedToken || !(bcrypt.compare(token, storedToken.hashedToken))) {
       return response(res, 400, 'Invalid token.')
     }
 
@@ -58,7 +53,7 @@ const authenticate = async (req, res, next) => {
     return next()
   } catch (error) {
     console.log(error)
-    return response(res, 400, 'Invalid token.')
+    return response(res, 400, 'Validation error.')
   }
 }
 
