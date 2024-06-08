@@ -42,12 +42,12 @@ const connectDB = async () => {
 const syncDatabase = async () => {
   try {
     // remove // for production
-    // await Users.sync()
-    // await Projects.sync()
-    // await Tasks.sync()
-    // await Tokens.sync()
-    // await ProjectsUsers.sync()
-    // await TasksUsers.sync()
+    await Users.sync()
+    await Projects.sync()
+    await Tasks.sync()
+    await Tokens.sync()
+    await ProjectsUsers.sync()
+    await TasksUsers.sync()
     console.log('All models were synchronized successfully.')
   } catch (error) {
     console.error('Error syncing database & tables:', error)
