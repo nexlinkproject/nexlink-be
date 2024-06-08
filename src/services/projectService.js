@@ -21,8 +21,8 @@ const deleteProject = async (id) => {
 }
 
 const findProjectUsers = async (id) => {
-  return Projects.findByPk(id, { include: Users });
-};
+  return Projects.findByPk(id, { include: Users })
+}
 
 const isUserInProject = async (projectId, userId) => {
   const project = await Projects.findByPk(projectId, {
@@ -31,10 +31,10 @@ const isUserInProject = async (projectId, userId) => {
       where: { id: userId },
       required: false
     }
-  });
-  
-  return project && project.Users.length > 0;
-};
+  })
+
+  return project && project.Users.length > 0
+}
 
 const addUserToProject = async (projectUserData) => {
   return ProjectsUsers.create(projectUserData)

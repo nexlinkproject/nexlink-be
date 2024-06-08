@@ -35,10 +35,10 @@ const isUserInTask = async (taskId, userId) => {
       where: { id: userId },
       required: false
     }
-  });
-  
-  return task && task.Users.length > 0;
-};
+  })
+
+  return task && task.Users.length > 0
+}
 
 const addUserToTask = async (taskUserData) => {
   return TasksUsers.create(taskUserData)

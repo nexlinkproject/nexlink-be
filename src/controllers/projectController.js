@@ -85,26 +85,26 @@ const deleteProject = async (req, res, next) => {
 const getProjectUsers = async (req, res, next) => {
   try {
     if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`);
+      return response(res, 404, `Project with ID: ${req.params.id} not found`)
     }
-    const project = await projectService.findProjectUsers(req.params.id);
+    const project = await projectService.findProjectUsers(req.params.id)
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} was not found`);
+      return response(res, 404, `Project with ID: ${req.params.id} was not found`)
     }
     if (!project.Users || project.Users.length === 0) {
-      return response(res, 404, `No users found for ${project.name}`);
+      return response(res, 404, `No users found for ${project.name}`)
     }
-    response(res, 200, 'Project retrieved successfully', { project });
+    response(res, 200, 'Project retrieved successfully', { project })
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message });
-    console.log(error);
-    next(error);
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
   }
-};
+}
 
 const addUserToProject = async (req, res, next) => {
   try {
-    const { projectId, userId } = req.params;
+    const { projectId, userId } = req.params
     if (!uuidValidate(projectId)) {
       return response(res, 404, `Project with ID: ${projectId} not found`)
     }
@@ -119,7 +119,7 @@ const addUserToProject = async (req, res, next) => {
     if (!user) {
       return response(res, 404, `User with ID: ${userId} not found or not registered`)
     }
-    const isUserAdded = await projectService.isUserInProject(projectId, userId);
+    const isUserAdded = await projectService.isUserInProject(projectId, userId)
     if (isUserAdded) {
       return response(res, 400, `${user.fullName} is already added to the project`)
     }
@@ -143,7 +143,7 @@ const removeUserFromProject = async (req, res, next) => {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
     const user = await userService.findUserById(userId)
-    const isUserAdded = await projectService.isUserInProject(projectId, userId);
+    const isUserAdded = await projectService.isUserInProject(projectId, userId)
     if (!isUserAdded) {
       return response(res, 404, `${user.fullName} not in this project`)
     }

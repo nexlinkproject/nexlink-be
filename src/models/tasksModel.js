@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
-const Projects = require('./projectsModel')
 
 const Tasks = sequelize.define('Task', {
   id: { type: DataTypes.UUID, primaryKey: true, allowNull: false },

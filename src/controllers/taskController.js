@@ -108,7 +108,7 @@ const getUserTasks = async (req, res, next) => {
     }
     const tasks = await taskService.findUserTasks(userId)
     if (!tasks || tasks.length === 0) {
-      return response(res, 404, `No tasks found for user with ID: ${userId}`);
+      return response(res, 404, `No tasks found for user with ID: ${userId}`)
     }
     response(res, 200, 'Tasks retrieved successfully', { tasks })
   } catch (error) {
@@ -120,7 +120,7 @@ const getUserTasks = async (req, res, next) => {
 
 const addUserToTask = async (req, res, next) => {
   try {
-    const { taskId, userId } = req.params;
+    const { taskId, userId } = req.params
     if (!uuidValidate(taskId)) {
       return response(res, 404, `Task with ID: ${taskId} not found`)
     }
@@ -135,7 +135,7 @@ const addUserToTask = async (req, res, next) => {
     if (!user) {
       return response(res, 404, `User with ID: ${userId} not found or not registered`)
     }
-    const isUserAdded = await taskService.isUserInTask(taskId, userId);
+    const isUserAdded = await taskService.isUserInTask(taskId, userId)
     if (isUserAdded) {
       return response(res, 400, `${user.fullName} is already added to the task`)
     }
@@ -159,7 +159,7 @@ const removeUserFromTask = async (req, res, next) => {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
     const user = await userService.findUserById(userId)
-    const isUserAdded = await taskService.isUserInTask(taskId, userId);
+    const isUserAdded = await taskService.isUserInTask(taskId, userId)
     if (!isUserAdded) {
       return response(res, 404, `${user.fullName} not in this task`)
     }
