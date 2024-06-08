@@ -13,16 +13,20 @@ const Tokens = require('./tokensModel')
 const ProjectsUsers = require('./projectUsersModel')
 const TasksUsers = require('./tasksUsersModel')
 
+// Many-To-Many relationships through ProjectsUsers
 Projects.belongsToMany(Users, { through: 'ProjectsUsers', foreignKey: 'projectId' });
 Users.belongsToMany(Projects, { through: 'ProjectsUsers', foreignKey: 'userId' });
-Tasks.belongsToMany(Users, { through: 'TasksUsers', foreignKey: 'taskId' });
-Users.belongsToMany(Tasks, { through: 'TasksUsers', foreignKey: 'userId' });
 ProjectsUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 ProjectsUsers.belongsTo(Projects, { foreignKey: 'projectId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
+// Many-To-Many relationships through TasksUsers
+Tasks.belongsToMany(Users, { through: 'TasksUsers', foreignKey: 'taskId' });
+Users.belongsToMany(Tasks, { through: 'TasksUsers', foreignKey: 'userId' });
 TasksUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
 TasksUsers.belongsTo(Tasks, { foreignKey: 'taskId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' });
+// One-To-Many relationships through Tokens and Users
 Tokens.belongsTo(Users, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' });
 Users.hasMany(Tokens, { foreignKey: 'userId', as: 'tokens' });
+// One-To-Many relationships through Tasks and Projects
 Tasks.belongsTo(Projects, { foreignKey: 'taskId' });
 Projects.hasMany(Tasks, { foreignKey: 'projectId' });
 
