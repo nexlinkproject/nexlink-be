@@ -38,7 +38,7 @@ const getAllGroups = async (req, res, next) => {
 
 const getGroupChat = async (req, res, next) => {
   try {
-    const groupId = parseInt(req.params.groupId, 10)
+    const { groupId } = req.params
     let { page, take } = req.query
     page = parseInt(page) || 1
     take = parseInt(take) || 5

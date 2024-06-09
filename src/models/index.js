@@ -18,37 +18,31 @@ const ChatsUsers = require('./chatsUsersModel')
 // Many-to-Many relationships through ProjectsUsers
 Projects.belongsToMany(Users, {
   through: ProjectsUsers,
-  foreignKey: 'projectId',
-  as: 'members'
+  foreignKey: 'projectId'
 })
 Users.belongsToMany(Projects, {
   through: ProjectsUsers,
-  foreignKey: 'userId',
-  as: 'projects'
+  foreignKey: 'userId'
 })
 
 // Many-to-Many relationships through TasksUsers
 Tasks.belongsToMany(Users, {
   through: TasksUsers,
-  foreignKey: 'taskId',
-  as: 'assignees'
+  foreignKey: 'taskId'
 })
 Users.belongsToMany(Tasks, {
   through: TasksUsers,
-  foreignKey: 'userId',
-  as: 'tasks'
+  foreignKey: 'userId'
 })
 
 // Many-To-Many relationships through ChatsUsers
 Chats.belongsToMany(Users, {
   through: ChatsUsers,
-  foreignKey: 'chatId',
-  as: 'members'
+  foreignKey: 'chatId'
 })
 Users.belongsToMany(Chats, {
   through: ChatsUsers,
-  foreignKey: 'userId',
-  as: 'chats'
+  foreignKey: 'userId'
 })
 
 // Self-referential relationship for group chats

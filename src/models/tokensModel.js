@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
+const Users = require('./usersModel')
 
 const Tokens = sequelize.define('Tokens', {
   id: {
@@ -17,7 +18,7 @@ const Tokens = sequelize.define('Tokens', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: Users,
       key: 'id'
     },
     onDelete: 'CASCADE',

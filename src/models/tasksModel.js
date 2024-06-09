@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
+const Projects = require('./projectsModel')
 
 const Tasks = sequelize.define('Tasks', {
   id: {
@@ -36,7 +37,7 @@ const Tasks = sequelize.define('Tasks', {
     type: DataTypes.UUID,
     allowNull: true,
     references: {
-      model: 'Projects',
+      model: Projects,
       key: 'id'
     },
     onDelete: 'SET NULL',

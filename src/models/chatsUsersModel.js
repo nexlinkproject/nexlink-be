@@ -1,17 +1,20 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
+const Chats = require('./chatsModel')
+const Users = require('./usersModel')
 
 const ChatsUsers = sequelize.define('ChatsUsers', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
     primaryKey: true
   },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: Users,
       key: 'id'
     },
     onDelete: 'SET NULL',
@@ -21,7 +24,7 @@ const ChatsUsers = sequelize.define('ChatsUsers', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'Chats',
+      model: Chats,
       key: 'id'
     },
     onDelete: 'SET NULL',

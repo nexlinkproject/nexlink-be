@@ -39,8 +39,8 @@ const getAllGroups = async (page, take, userId) => {
 
 const getGroupChat = async (groupId, page, take) => {
   const offset = (page - 1) * take
-  const group = await Chats.findOne({
-    where: { id: groupId },
+  const group = await Chats.findAll({
+    where: { groupId },
     include: [
       {
         model: Users
