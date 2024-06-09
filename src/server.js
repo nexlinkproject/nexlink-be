@@ -1,10 +1,15 @@
 const httpServer = require('./app')
 const { connectDB, syncDatabase } = require('./models')
 const { PORT } = require('./config')
+const socketIO = require('socket.io')
+const { socketHandlers } = require('./controllers/chatController')
+
+const io = socketIO(httpServer)
+
+socketHandlers(io)
 
 async function startServer () {
   try {
-    // // Remove for using Secret Manager on Production
     // const { loadSecrets } = require('./utils/secretManager')
     // await loadSecrets();
 

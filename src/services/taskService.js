@@ -20,10 +20,12 @@ const deleteTask = async (id) => {
   return Tasks.destroy({ where: { id } })
 }
 
+// Using Tasks model for one to many
 const findProjectTasks = async (projectId) => {
   return Tasks.findAll({ where: { projectId } })
 }
 
+// Using TasksUsers model for many to many
 const findUserTasks = async (userId) => {
   return TasksUsers.findAll({ where: { userId }, include: Tasks })
 }
@@ -45,11 +47,9 @@ const addUserToTask = async (taskUserData) => {
 }
 
 const removeUserFromTask = async (taskId, userId) => {
-  const task = await Tasks.findByPk(taskId)
-  const user = await Users.findByPk(userId)
-  if (task && user) {
-    await task.removeUser(user)
-    return task
+  const taskUser = await TasksUsers.findOne({ where: { taskId, userId } })
+  if (taskUser) {
+    return taskUser.destroy()
   }
   throw new Error('Task or User not found')
 }

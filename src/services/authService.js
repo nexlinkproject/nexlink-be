@@ -1,19 +1,11 @@
 const { Users, Tokens } = require('../models')
 
-const findUserByEmail = async (email) => {
-  return Users.findOne({ where: { email } })
-}
-
 const createUser = async (userData) => {
   return Users.create(userData)
 }
 
-const findUserById = async (id) => {
-  return Users.findOne({ where: { id } })
-}
-
 const updateUserPassword = async (user, hashedPassword) => {
-  return user.update({ password: hashedPassword, resetPasswordToken: null, resetPasswordExpires: null })
+  return Users.update({ password: hashedPassword, resetPasswordToken: null, resetPasswordExpires: null })
 }
 
 const createToken = async (tokenData) => {
@@ -28,4 +20,4 @@ const findRefreshToken = async (userId) => {
   })
 }
 
-module.exports = { findUserByEmail, createUser, findUserById, updateUserPassword, createToken, findRefreshToken }
+module.exports = { createUser, updateUserPassword, createToken, findRefreshToken }

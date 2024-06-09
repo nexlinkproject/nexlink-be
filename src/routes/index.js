@@ -11,5 +11,6 @@ router.use('/auth', require('./authRoutes'))
 router.use('/users', require('./userRoutes'))
 router.use('/projects', require('./projectRoutes'))
 router.use('/tasks', require('./taskRoutes'))
+router.use('/chat', require('./chatRoutes'))
 
 module.exports = router

@@ -2,13 +2,10 @@ const jwt = require('jsonwebtoken')
 const { JWT_ACCESS_SECRET } = require('../config')
 const authService = require('../services/authService')
 const bcrypt = require('bcryptjs')
+const Users = require('../models/usersModel')
 
 const response = (res, statusCode, message, data = {}) => {
-  res.status(statusCode).json({
-    status: statusCode < 400 ? 'success' : 'error',
-    message,
-    data
-  })
+  res.status(statusCode).json({ status: statusCode < 400 ? 'success' : 'error', message, data })
 }
 
 const notFound = (req, res, next) => {
@@ -18,11 +15,7 @@ const notFound = (req, res, next) => {
 
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack)
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal Server Error',
-    error: err.message
-  })
+  res.status(500).json({ status: 'error', message: 'Internal Server Error', error: err.message })
   next()
 }
 
@@ -42,7 +35,7 @@ const authenticate = async (req, res, next) => {
     const { userId } = decoded
 
     const storedToken = await authService.findRefreshToken(userId)
-    if (!storedToken || !(bcrypt.compare(token, storedToken.hashedToken))) {
+    if (!storedToken || !(await bcrypt.compare(token, storedToken.hashedToken))) {
       return response(res, 400, 'Invalid token.')
     }
 
@@ -54,4 +47,15 @@ const authenticate = async (req, res, next) => {
   }
 }
 
-module.exports = { notFound, response, errorHandler, authenticate }
+const authenticateWebsocket = async (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const user = await Users.findByPk(decoded.userId)
+    return user ? user.id : null
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
+
+module.exports = { notFound, response, errorHandler, authenticate, authenticateWebsocket }

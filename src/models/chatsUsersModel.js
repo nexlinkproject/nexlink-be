@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
 
-const TasksUsers = sequelize.define('TaskUser', {
-  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+const Chats = sequelize.define('Chat', {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
   createdAt: { type: DataTypes.DATE },
   updatedAt: { type: DataTypes.DATE }
 })
 
-module.exports = TasksUsers
+module.exports = Chats

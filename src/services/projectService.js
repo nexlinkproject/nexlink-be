@@ -41,11 +41,9 @@ const addUserToProject = async (projectUserData) => {
 }
 
 const removeUserFromProject = async (projectId, userId) => {
-  const project = await Projects.findByPk(projectId)
-  const user = await Users.findByPk(userId)
-  if (project && user) {
-    await project.removeUser(user)
-    return project
+  const projectUser = await ProjectsUsers.findOne({ where: { projectId, userId } })
+  if (projectUser) {
+    return projectUser.destroy()
   }
   throw new Error('Project or User not found')
 }
