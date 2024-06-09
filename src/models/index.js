@@ -19,36 +19,36 @@ const ChatsUsers = require('./chatsUsersModel')
 Projects.belongsToMany(Users, {
   through: ProjectsUsers,
   foreignKey: 'projectId',
-  as: 'members' // alias for the relationship
+  as: 'members'
 })
 Users.belongsToMany(Projects, {
   through: ProjectsUsers,
   foreignKey: 'userId',
-  as: 'projects' // alias for the relationship
+  as: 'projects'
 })
 
 // Many-to-Many relationships through TasksUsers
 Tasks.belongsToMany(Users, {
   through: TasksUsers,
   foreignKey: 'taskId',
-  as: 'assignees' // alias for the relationship
+  as: 'assignees'
 })
 Users.belongsToMany(Tasks, {
   through: TasksUsers,
   foreignKey: 'userId',
-  as: 'tasks' // alias for the relationship
+  as: 'tasks'
 })
 
 // Many-To-Many relationships through ChatsUsers
 Chats.belongsToMany(Users, {
   through: ChatsUsers,
   foreignKey: 'chatId',
-  as: 'members' // alias for the relationship
+  as: 'members'
 })
 Users.belongsToMany(Chats, {
   through: ChatsUsers,
   foreignKey: 'userId',
-  as: 'chats' // alias for the relationship
+  as: 'chats'
 })
 
 // Self-referential relationship for group chats
@@ -76,11 +76,11 @@ Users.hasMany(Tokens, {
 // One-to-Many relationships between Tasks and Projects
 Projects.hasMany(Tasks, {
   foreignKey: 'projectId',
-  as: 'tasks' // alias for the relationship
+  as: 'tasks'
 })
 Tasks.belongsTo(Projects, {
   foreignKey: 'projectId',
-  as: 'project' // alias for the relationship
+  as: 'project'
 })
 
 const connectDB = async () => {
@@ -103,8 +103,8 @@ const syncDatabase = async () => {
     await TasksUsers.sync()
     await Chats.sync()
     await ChatsUsers.sync()
-    await sequelize.authenticate()
-    await sequelize.sync()
+    // await sequelize.authenticate()
+    // await sequelize.sync()
     console.log('All models were synchronized successfully.')
   } catch (error) {
     console.error('Error syncing database & tables:', error)
