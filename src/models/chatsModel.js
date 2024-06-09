@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
 
-const Chats = sequelize.define('Chat', {
+const Chats = sequelize.define('Chats', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

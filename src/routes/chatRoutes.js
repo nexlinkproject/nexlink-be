@@ -4,9 +4,9 @@ const { createGroupChat, deleteGroupChat, getAllGroups, getGroupChat, sendMessag
 const { authenticate } = require('../utils/middleware')
 
 router.post('/groups', authenticate, createGroupChat)
-router.delete('/group/:groupId', authenticate, deleteGroupChat)
+router.delete('/groups/:groupId', authenticate, deleteGroupChat)
 router.get('/', authenticate, getAllGroups)
 router.get('/groups/:groupId', authenticate, getGroupChat)
-router.get('/groups/:groupId/message', authenticate, sendMessage)
+router.post('/groups/:groupId/message', authenticate, sendMessage)
 
 module.exports = router

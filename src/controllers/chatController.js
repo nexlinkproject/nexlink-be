@@ -5,8 +5,8 @@ const { response } = require('../utils/middleware')
 const createGroupChat = async (req, res, next) => {
   try {
     const { userId } = req
-    const { groupName, members } = req.body
-    const group = await chatService.createGroupChat(userId, groupName, members)
+    const { groupName, members, chatType } = req.body
+    const group = await chatService.createGroupChat(userId, groupName, members, chatType)
     response(res, 201, 'New Group Chat has been created', group)
   } catch (err) {
     next(err)
@@ -25,7 +25,7 @@ const deleteGroupChat = async (req, res, next) => {
 
 const getAllGroups = async (req, res, next) => {
   try {
-    const { userId } = req
+    const { userId } = req.user
     let { page, take } = req.query
     page = parseInt(page) || 1
     take = parseInt(take) || 5
@@ -51,10 +51,11 @@ const getGroupChat = async (req, res, next) => {
 
 const sendMessage = async (req, res, next) => {
   try {
-    const groupId = parseInt(req.params.groupId, 10)
-    const { userId } = req
-    const { message } = req.body
-    const chat = await chatService.createChatByGroup(message, userId, groupId)
+    const { userId } = req.user
+    const { groupId } = req.params
+    const { message, chatType } = req.body
+    console.log(userId, groupId, message, chatType )
+    const chat = await chatService.createChatByGroup(message, userId, groupId, chatType)
     response(res, 201, 'New message has been created', chat)
   } catch (err) {
     next(err)
