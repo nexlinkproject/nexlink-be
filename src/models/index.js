@@ -15,27 +15,73 @@ const ProjectsUsers = require('./projectsUsersModel')
 const TasksUsers = require('./tasksUsersModel')
 const ChatsUsers = require('./chatsUsersModel')
 
-// Many-To-Many relationships through ProjectsUsers
-Projects.belongsToMany(Users, { through: 'ProjectsUsers', foreignKey: 'projectId' })
-Users.belongsToMany(Projects, { through: 'ProjectsUsers', foreignKey: 'userId' })
-ProjectsUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-ProjectsUsers.belongsTo(Projects, { foreignKey: 'projectId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-// Many-To-Many relationships through TasksUsers
-Tasks.belongsToMany(Users, { through: 'TasksUsers', foreignKey: 'taskId' })
-Users.belongsToMany(Tasks, { through: 'TasksUsers', foreignKey: 'userId' })
-TasksUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-TasksUsers.belongsTo(Tasks, { foreignKey: 'taskId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
+// Many-to-Many relationships through ProjectsUsers
+Projects.belongsToMany(Users, {
+  through: ProjectsUsers,
+  foreignKey: 'projectId',
+  as: 'members' // alias for the relationship
+})
+Users.belongsToMany(Projects, {
+  through: ProjectsUsers,
+  foreignKey: 'userId',
+  as: 'projects' // alias for the relationship
+})
+
+// Many-to-Many relationships through TasksUsers
+Tasks.belongsToMany(Users, {
+  through: TasksUsers,
+  foreignKey: 'taskId',
+  as: 'assignees' // alias for the relationship
+})
+Users.belongsToMany(Tasks, {
+  through: TasksUsers,
+  foreignKey: 'userId',
+  as: 'tasks' // alias for the relationship
+})
+
 // Many-To-Many relationships through ChatsUsers
-Chats.belongsToMany(Users, { through: 'ChatsUsers', foreignKey: 'chatId' })
-Users.belongsToMany(Chats, { through: 'ChatsUsers', foreignKey: 'userId' })
-ChatsUsers.belongsTo(Users, { foreignKey: 'userId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-ChatsUsers.belongsTo(Chats, { foreignKey: 'chatId', allowNull: false, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-// One-To-Many relationships through Tokens and Users
-Tokens.belongsTo(Users, { foreignKey: 'userId', as: 'user', onDelete: 'CASCADE' })
-Users.hasMany(Tokens, { foreignKey: 'userId', as: 'tokens' })
-// One-To-Many relationships through Tasks and Projects
-Tasks.belongsTo(Projects, { foreignKey: 'projectId' })
-Projects.hasMany(Tasks, { foreignKey: 'projectId' })
+Chats.belongsToMany(Users, {
+  through: ChatsUsers,
+  foreignKey: 'chatId',
+  as: 'members' // alias for the relationship
+})
+Users.belongsToMany(Chats, {
+  through: ChatsUsers,
+  foreignKey: 'userId',
+  as: 'chats' // alias for the relationship
+})
+
+// Self-referential relationship for group chats
+Chats.hasMany(Chats, {
+  foreignKey: 'groupId',
+  as: 'groupMessages'
+})
+Chats.belongsTo(Chats, {
+  foreignKey: 'groupId',
+  as: 'parentGroup'
+})
+
+// One-to-Many relationships between Tokens and Users
+Tokens.belongsTo(Users, {
+  foreignKey: 'userId',
+  as: 'user',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+})
+Users.hasMany(Tokens, {
+  foreignKey: 'userId',
+  as: 'tokens'
+})
+
+// One-to-Many relationships between Tasks and Projects
+Projects.hasMany(Tasks, {
+  foreignKey: 'projectId',
+  as: 'tasks' // alias for the relationship
+})
+Tasks.belongsTo(Projects, {
+  foreignKey: 'projectId',
+  as: 'project' // alias for the relationship
+})
 
 const connectDB = async () => {
   try {
@@ -49,12 +95,14 @@ const connectDB = async () => {
 const syncDatabase = async () => {
   try {
     // remove // for production
-    // await Users.sync()
-    // await Projects.sync()
-    // await Tasks.sync()
-    // await Tokens.sync()
-    // await ProjectsUsers.sync()
-    // await TasksUsers.sync()
+    await Users.sync()
+    await Projects.sync()
+    await Tasks.sync()
+    await Tokens.sync()
+    await ProjectsUsers.sync()
+    await TasksUsers.sync()
+    await Chats.sync()
+    await ChatsUsers.sync()
     await sequelize.authenticate()
     await sequelize.sync()
     console.log('All models were synchronized successfully.')
@@ -63,4 +111,4 @@ const syncDatabase = async () => {
   }
 }
 
-module.exports = { connectDB, sequelize, Users, Projects, Tasks, Tokens, ProjectsUsers, TasksUsers, syncDatabase }
+module.exports = { connectDB, sequelize, Users, Projects, Tasks, Tokens, ProjectsUsers, TasksUsers, Chats, ChatsUsers, syncDatabase }

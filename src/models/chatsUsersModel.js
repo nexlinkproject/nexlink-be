@@ -1,10 +1,29 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
+const Users = require('./usersModel')
+const Chats = require('./chatsModel')
 
-const Chats = sequelize.define('Chat', {
-  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
-  createdAt: { type: DataTypes.DATE },
-  updatedAt: { type: DataTypes.DATE }
+const ChatsUsers = sequelize.define('ChatsUsers', {
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Users,
+      key: 'id'
+    },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE'
+  },
+  chatId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: Chats,
+      key: 'id'
+    },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE'
+  }
 })
 
-module.exports = Chats
+module.exports = ChatsUsers

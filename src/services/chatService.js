@@ -1,15 +1,16 @@
 const { Chats, ChatsUsers, Users } = require('../models')
 
-const createGroupChat = async (userId) => {
+const createGroupChat = async (userId, groupName, members) => {
   const chat = await Chats.create({
-    message: '',
-    userId,
-    groupId: null
+    name: groupName,
+    creatorId: userId
   })
-  await ChatsUsers.create({
-    userId,
-    chatId: chat.id
-  })
+  for (const memberId of members) {
+    await ChatsUsers.create({
+      userId: memberId,
+      chatId: chat.id
+    })
+  }
   return chat
 }
 

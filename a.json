@@ -1,0 +1,287 @@
+{
+    "info": {
+      "name": "Chat API",
+      "description": "Postman Collection for Chat API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Create Group Chat",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"groupName\": \"Project Alpha\",\n  \"members\": [1, 2, 3]\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/chat/group",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "chat", "group"]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var jsonData = pm.response.json();",
+                "",
+                "pm.test('response status code should be 201', function () {",
+                "    pm.response.to.have.status(201);",
+                "});",
+                "",
+                "pm.test('response body should be an object', function () {",
+                "    pm.expect(jsonData).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body should have correct properties', function () {",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "    pm.expect(jsonData.status).to.equal('success');",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData.message).to.equal('New Group Chat has been created');",
+                "    pm.expect(jsonData).to.have.property('data');",
+                "    pm.expect(jsonData.data).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body data should have id property and not be empty', function () {",
+                "    pm.expect(jsonData.data).to.have.property('id');",
+                "    pm.expect(jsonData.data.id).to.not.be.empty;",
+                "    pm.environment.set('groupId', jsonData.data.id);",
+                "});"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Delete Group Chat",
+        "request": {
+          "method": "DELETE",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/chat/group/{{groupId}}",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "chat", "group", "{{groupId}}"]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('response status code should be 200', function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test('response body should be an object', function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body should have correct properties', function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "    pm.expect(jsonData.status).to.equal('success');",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData.message).to.equal(`Group Chat with id ${pm.environment.get('groupId')} has been deleted`);",
+                "});"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Get All Groups",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/chat",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "chat"],
+            "query": [
+              {
+                "key": "page",
+                "value": "1"
+              },
+              {
+                "key": "take",
+                "value": "5"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var jsonData = pm.response.json();",
+                "",
+                "pm.test('response status code should be 200', function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test('response body should be an object', function () {",
+                "    pm.expect(jsonData).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body should have correct properties', function () {",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "    pm.expect(jsonData.status).to.equal('success');",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData.message).to.equal('Your Group Chat with the latest chat has been retrieved');",
+                "    pm.expect(jsonData).to.have.property('data');",
+                "    pm.expect(jsonData.data).to.be.an('array');",
+                "});"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Get Group Chat",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/chat/group/{{groupId}}",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "chat", "group", "{{groupId}}"],
+            "query": [
+              {
+                "key": "page",
+                "value": "1"
+              },
+              {
+                "key": "take",
+                "value": "5"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var jsonData = pm.response.json();",
+                "",
+                "pm.test('response status code should be 200', function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test('response body should be an object', function () {",
+                "    pm.expect(jsonData).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body should have correct properties', function () {",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "    pm.expect(jsonData.status).to.equal('success');",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData.message).to.equal(`GroupChat with id ${pm.environment.get('groupId')} has been retrieved`);",
+                "    pm.expect(jsonData).to.have.property('data');",
+                "    pm.expect(jsonData.data).to.be.an('object');",
+                "});"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Send New Message",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"message\": \"Hello, team!\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/chat/group/{{groupId}}/message",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "chat", "group", "{{groupId}}", "message"]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var jsonData = pm.response.json();",
+                "",
+                "pm.test('response status code should be 201', function () {",
+                "    pm.response.to.have.status(201);",
+                "});",
+                "",
+                "pm.test('response body should be an object', function () {",
+                "    pm.expect(jsonData).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body should have correct properties', function () {",
+                "    pm.expect(jsonData).to.have.property('status');",
+                "    pm.expect(jsonData.status).to.equal('success');",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData.message).to.equal('New message has been created');",
+                "    pm.expect(jsonData).to.have.property('data');",
+                "    pm.expect(jsonData.data).to.be.an('object');",
+                "});",
+                "",
+                "pm.test('response body data should have id property and not be empty', function () {",
+                "    pm.expect(jsonData.data).to.have.property('id');",
+                "    pm.expect(jsonData.data.id).to.not.be.empty;",
+                "});"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+  

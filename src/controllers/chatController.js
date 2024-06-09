@@ -5,7 +5,8 @@ const { response } = require('../utils/middleware')
 const createGroupChat = async (req, res, next) => {
   try {
     const { userId } = req
-    const group = await chatService.createGroupChat(userId)
+    const { groupName, members } = req.body
+    const group = await chatService.createGroupChat(userId, groupName, members)
     response(res, 201, 'New Group Chat has been created', group)
   } catch (err) {
     next(err)
@@ -48,17 +49,29 @@ const getGroupChat = async (req, res, next) => {
   }
 }
 
+const sendMessage = async (req, res, next) => {
+  try {
+    const groupId = parseInt(req.params.groupId, 10)
+    const { userId } = req
+    const { message } = req.body
+    const chat = await chatService.createChatByGroup(message, userId, groupId)
+    response(res, 201, 'New message has been created', chat)
+  } catch (err) {
+    next(err)
+  }
+}
+
 const socketHandlers = (io) => {
   io.on('connection', (socket) => {
     console.log('New WebSocket connection')
 
     socket.on('createGroupChat', async (data) => {
       try {
-        const { token } = data
+        const { token, groupName, members } = data
         if (!token) throw new Error('Token is missing')
         const userId = await requireAuthenticatedWebSocket(token)
         if (userId) {
-          const group = await chatService.createGroupChat(userId)
+          const group = await chatService.createGroupChat(userId, groupName, members)
           socket.emit('groupChatCreated', {
             data: group,
             message: 'New Group Chat has been created',
@@ -94,23 +107,23 @@ const socketHandlers = (io) => {
       }
     })
 
-    socket.on('createChatByGroup', async (data) => {
+    socket.on('sendMessage', async (data) => {
       try {
-        const { token, chatType, groupId } = data
+        const { token, message, groupId } = data
         if (!token) throw new Error('Token is missing')
         const userId = await requireAuthenticatedWebSocket(token)
         if (userId) {
-          const chat = await chatService.createChatByGroup(chatType, groupId, userId)
-          socket.emit('chatCreated', {
+          const chat = await chatService.createChatByGroup(message, userId, groupId)
+          socket.emit('messageSent', {
             data: chat,
-            message: 'New Chat has been created in the group',
+            message: 'New message has been created',
             status: true
           })
         } else {
           throw new Error('Unauthorized')
         }
       } catch (err) {
-        socket.emit('chatCreationError', { message: err.message })
+        socket.emit('messageError', { message: err.message })
       }
     })
 
@@ -125,5 +138,6 @@ module.exports = {
   deleteGroupChat,
   getAllGroups,
   getGroupChat,
+  sendMessage,
   socketHandlers
 }
