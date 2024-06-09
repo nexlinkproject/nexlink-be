@@ -1,32 +1,69 @@
 const bcrypt = require('bcryptjs')
-// const jwt = require('jsonwebtoken');
 const { generateTokens } = require('../utils/jwt')
 const { v4: uuidv4 } = require('uuid')
 const { response } = require('../utils/middleware')
-// const { Op } = require('sequelize');
 const authService = require('../services/authService')
+
+// For firebase
+const admin = require('firebase-admin')
+const serviceAccount = require('../../keys/nexlink-trial-firebase-adminsdk-5ds6q-29156a9c92.json')
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+})
+const auth = admin.auth()
 
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body
-    const user = await authService.findUserByEmail(email)
+    let existingUser
+    let createdUser
 
-    if (!user) {
-      return response(res, 404, 'You are not registered!')
-    }
+    if (req.body.signInByGoogle) {
+      const decodedToken = await auth.verifyIdToken(req.body.googleAuthToken)
+      const { email, name } = decodedToken
 
-    const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) {
-      return response(res, 400, 'Your email or password is incorrect!')
+      existingUser = await authService.findUserByEmail(email)
+      if (existingUser === null) {
+        createdUser = await authService.createUser({
+          email,
+          fullName: name,
+          signedByGoogle: true
+        })
+      }
+    } else {
+      const { email, password } = req.body
+      if (!email || !password) {
+        res.status(400)
+        throw new Error('You must provide an email and a password.')
+      }
+
+      existingUser = await authService.findUserByEmail(email)
+      if (!existingUser) {
+        return response(res, 404, 'You are not registered!')
+      }
+
+      const isMatch = await bcrypt.compare(password, existingUser.password)
+      if (!isMatch) {
+        return response(res, 400, 'Your email or password is incorrect!')
+      }
     }
 
     const jti = uuidv4()
-    const { accessToken, refreshToken } = generateTokens(user, jti)
-    const hashedToken = await bcrypt.hash(refreshToken, 10)
 
-    await authService.createToken({ id: jti, hashedToken, userId: user.id })
+    if (existingUser || createdUser) {
+      if (existingUser === null) {
+        const { accessToken, refreshToken } = generateTokens(createdUser, jti)
+        const hashedToken = await bcrypt.hash(refreshToken, 10)
+        await authService.createToken({ id: jti, hashedToken, userId: createdUser.id })
 
-    response(res, 200, 'Login successful', { accessToken, refreshToken })
+        response(res, 200, 'Login successful', { accessToken, refreshToken })
+      } else {
+        const { accessToken, refreshToken } = generateTokens(existingUser, jti)
+        const hashedToken = await bcrypt.hash(refreshToken, 10)
+        await authService.createToken({ id: jti, hashedToken, userId: existingUser.id })
+
+        response(res, 200, 'Login successful', { accessToken, refreshToken })
+      }
+    }
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
     console.log(error)

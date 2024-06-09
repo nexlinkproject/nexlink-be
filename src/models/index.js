@@ -10,7 +10,7 @@ const Users = require('./usersModel')
 const Projects = require('./projectsModel')
 const Tasks = require('./tasksModel')
 const Tokens = require('./tokensModel')
-const ProjectsUsers = require('./projectUsersModel')
+const ProjectsUsers = require('./projectsUsersModel')
 const TasksUsers = require('./tasksUsersModel')
 
 // Many-To-Many relationships through ProjectsUsers

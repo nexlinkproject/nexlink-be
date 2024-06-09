@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../utils/db')
-const Projects = require('./projectsModel');
+const Projects = require('./projectsModel')
 
 const Tasks = sequelize.define('Task', {
-  id: { type: DataTypes.UUID, primaryKey: true, allowNull: false },
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
   name: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.STRING, allowNull: false },
   status: { type: DataTypes.STRING, allowNull: false },

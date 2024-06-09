@@ -37,12 +37,9 @@ const authenticate = async (req, res, next) => {
     return response(res, 401, 'Access denied. No token provided.')
   }
 
-  console.log('Token received:', token)
-
   try {
     const decoded = jwt.verify(token, JWT_ACCESS_SECRET)
     const { userId } = decoded
-    console.log(decoded)
 
     const storedToken = await authService.findRefreshToken(userId)
     if (!storedToken || !(bcrypt.compare(token, storedToken.hashedToken))) {

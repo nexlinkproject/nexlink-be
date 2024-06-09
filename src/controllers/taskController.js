@@ -1,5 +1,6 @@
 const taskService = require('../services/taskService')
 const userService = require('../services/userService')
+const projectService = require('../services/projectService')
 const { response } = require('../utils/middleware')
 const { v4: uuidv4, validate: uuidValidate } = require('uuid')
 
@@ -36,7 +37,15 @@ const getTaskById = async (req, res, next) => {
 
 const createTask = async (req, res, next) => {
   try {
-    const taskData = { ...req.body, id: uuidv4() }
+    const { projectId } = req.body
+    console.log(projectId)
+    if (projectId !== null && projectId !== undefined) {
+      const project = await projectService.findProjectById(projectId)
+      if (!project) {
+        return response(res, 404, `Project with ID: ${projectId} was not found`)
+      }
+    }
+    const taskData = { ...req.body, id: uuidv4(), projectId: projectId || null }
     const task = await taskService.createTask(taskData)
     response(res, 201, `${task.name} created successfully`, { task })
   } catch (error) {
