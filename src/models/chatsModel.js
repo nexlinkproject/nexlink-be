@@ -10,7 +10,7 @@ const Chats = sequelize.define('Chat', {
   },
   message: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
   chatType: {
     type: DataTypes.ENUM('GROUP', 'PRIVATE'),
