@@ -1,8 +1,24 @@
 const { Projects, Users, ProjectsUsers } = require('../models')
+const { Op } = require('sequelize');
 
 const findAllProjects = async () => {
-  return Projects.findAll()
-}
+  return Projects.findAll();
+};
+
+const findProjectsByDateRange = async (startDate, endDate) => {
+  return Projects.findAll({
+    where: {
+      startDate: {
+        [Op.gte]: new Date(startDate) // Greater than or equal to startDate
+      },
+      endDate: {
+        [Op.lte]: new Date(endDate) // Less than or equal to endDate
+      }
+    }
+  });
+};
+
+
 
 const findProjectById = async (id) => {
   return Projects.findByPk(id)
@@ -50,6 +66,7 @@ const removeUserFromProject = async (projectId, userId) => {
 
 module.exports = {
   findAllProjects,
+  findProjectsByDateRange,
   findProjectById,
   createProject,
   updateProject,

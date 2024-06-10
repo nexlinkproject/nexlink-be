@@ -5,17 +5,34 @@ const { response } = require('../utils/middleware')
 
 const getProjects = async (req, res, next) => {
   try {
-    const projects = await projectService.findAllProjects()
-    if (projects.length === 0) {
-      return response(res, 404, 'No Project found')
+    // Mengambil parameter startDate dan endDate dari query string
+    const { startDate, endDate } = req.query;
+    
+    let projects;
+    
+    if (startDate && endDate) {
+      // Jika parameter startDate dan endDate ada, filter proyek berdasarkan tanggal
+      projects = await projectService.findProjectsByDateRange(startDate, endDate);
+      response(res, 200, 'projects filter retrieved successfully', { projects });
+    } else {
+      // Jika tidak ada parameter, ambil semua proyek
+      projects = await projectService.findAllProjects();
+      response(res, 200, 'All projects retrieved successfully', { projects });
     }
-    response(res, 200, 'All projects retrieved successfully', { projects })
+    
+    if (projects.length === 0) {
+      return response(res, 404, 'No Project found');
+    }
+    
+    
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
+
+
 
 const getProjectById = async (req, res, next) => {
   try {
