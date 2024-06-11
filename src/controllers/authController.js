@@ -56,13 +56,13 @@ const login = async (req, res, next) => {
         const hashedToken = await bcrypt.hash(refreshToken, 10)
         await authService.createToken({ id: jti, hashedToken, userId: createdUser.id })
 
-        response(res, 200, 'Login successful', { userId: createdUser.id, accessToken, refreshToken })
+        response(res, 200, 'Login successful', { userId: createdUser.id, createdUser.fullName, accessToken, refreshToken })
       } else {
         const { accessToken, refreshToken } = generateTokens(existingUser, jti)
         const hashedToken = await bcrypt.hash(refreshToken, 10)
         await authService.createToken({ id: jti, hashedToken, userId: existingUser.id })
 
-        response(res, 200, 'Login successful', { userId: existingUser.id, accessToken, refreshToken })
+        response(res, 200, 'Login successful', { userId: existingUser.id, existingUser.fullName, accessToken, refreshToken })
       }
     }
   } catch (error) {
