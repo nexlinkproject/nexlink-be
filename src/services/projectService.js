@@ -18,6 +18,28 @@ const findProjectsByDateRange = async (startDate, endDate) => {
   });
 };
 
+const findProjectsByStatus = async (status) => {
+  return Projects.findAll({
+    where: {
+      status: status
+    }
+  });
+};
+
+const findProjectsByDateRangeAndStatus = async (startDate, endDate, status) => {
+  return Projects.findAll({
+    where: {
+      startDate: {
+        [Op.gte]: new Date(startDate)
+      },
+      endDate: {
+        [Op.lte]: new Date(endDate)
+      },
+      status: status
+    }
+  });
+};
+
 
 
 const findProjectById = async (id) => {
@@ -67,6 +89,8 @@ const removeUserFromProject = async (projectId, userId) => {
 module.exports = {
   findAllProjects,
   findProjectsByDateRange,
+  findProjectsByStatus,
+  findProjectsByDateRangeAndStatus,
   findProjectById,
   createProject,
   updateProject,
