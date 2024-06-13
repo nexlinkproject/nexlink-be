@@ -54,7 +54,7 @@ const sendMessage = async (req, res, next) => {
     const { userId } = req.user
     const { groupId } = req.params
     const { message, chatType } = req.body
-    console.log(userId, groupId, message, chatType )
+    console.log(userId, groupId, message, chatType)
     const chat = await chatService.createChatByGroup(message, userId, groupId, chatType)
     response(res, 201, 'New message has been created', chat)
   } catch (err) {

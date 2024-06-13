@@ -20,12 +20,13 @@ const getTasks = async (req, res, next) => {
 
 const getTaskById = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Task with ID: ${req.params.id} was not found`)
+    const taskId = req.params.id
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} was not found`)
     }
-    const task = await taskService.findTaskById(req.params.id)
+    const task = await taskService.findTaskById(taskId)
     if (!task) {
-      return response(res, 404, `Task with ID: ${req.params.id} was not found`)
+      return response(res, 404, `Task with ID: ${taskId} was not found`)
     }
     response(res, 200, `${task.name} retrieved successfully`, { task })
   } catch (error) {
@@ -57,14 +58,15 @@ const createTask = async (req, res, next) => {
 
 const updateTask = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Task with ID: ${req.params.id} not found`)
+    const taskId = req.params.id
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} not found`)
     }
-    const [updated] = await taskService.updateTask(req.params.id, req.body)
+    const [updated] = await taskService.updateTask(taskId, req.body)
     if (!updated) {
-      return response(res, 404, `Task with ID: ${req.params.id} not found`)
+      return response(res, 404, `Task with ID: ${taskId} not found`)
     }
-    const updatedTask = await taskService.findTaskById(req.params.id)
+    const updatedTask = await taskService.findTaskById(taskId)
     response(res, 200, `${updatedTask.name} updated successfully`, { updatedTask })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
@@ -75,13 +77,14 @@ const updateTask = async (req, res, next) => {
 
 const deleteTask = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Task with ID: ${req.params.id} not found`)
+    const taskId = req.params.id
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} not found`)
     }
-    const task = await taskService.findTaskById(req.params.id)
-    const deleted = await taskService.deleteTask(req.params.id)
+    const task = await taskService.findTaskById(taskId)
+    const deleted = await taskService.deleteTask(taskId)
     if (!deleted) {
-      return response(res, 404, `Task with ID: ${req.params.id} not found`)
+      return response(res, 404, `Task with ID: ${taskId} not found`)
     }
     response(res, 200, `${task.name} deleted successfully`)
   } catch (error) {

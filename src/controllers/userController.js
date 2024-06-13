@@ -18,12 +18,13 @@ const getUsers = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `User with ID: ${req.params.id} was not found`)
+    const userId = req.params.id
+    if (!uuidValidate(userId)) {
+      return response(res, 404, `User with ID: ${userId} was not found`)
     }
-    const user = await userService.findUserById(req.params.id)
+    const user = await userService.findUserById(userId)
     if (!user) {
-      return response(res, 404, `User with ID: ${req.params.id} was not found`)
+      return response(res, 404, `User with ID: ${userId} was not found`)
     }
     response(res, 200, 'User retrieved successfully', { user })
   } catch (error) {

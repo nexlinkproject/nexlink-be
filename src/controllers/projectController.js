@@ -5,47 +5,45 @@ const { response } = require('../utils/middleware')
 
 const getProjects = async (req, res, next) => {
   try {
-    const { startDate, endDate, status } = req.query;
-    
-    let projects;
-    
+    const { startDate, endDate, status } = req.query
+
+    let projects
+
     if (startDate && endDate && status) {
       // Ambil semua data projects berdasarkan startDate, endDate dan status
-      projects = await projectService.findProjectsByDateRangeAndStatus(startDate, endDate, status);
+      projects = await projectService.findProjectsByDateRangeAndStatus(startDate, endDate, status)
     } else if (startDate && endDate) {
       // Ambil semua data projects berdasarkan startDate dan endDate
-      projects = await projectService.findProjectsByDateRange(startDate, endDate);
+      projects = await projectService.findProjectsByDateRange(startDate, endDate)
     } else if (status) {
       // Ambil semua data projects berdasarkan status
-      projects = await projectService.findProjectsByStatus(status);
+      projects = await projectService.findProjectsByStatus(status)
     } else {
       // Ambil semua data projects
-      projects = await projectService.findAllProjects();
+      projects = await projectService.findAllProjects()
     }
-    
+
     if (projects.length === 0) {
-      return response(res, 404, 'No Project found');
+      return response(res, 404, 'No Project found')
     }
-    
-    response(res, 200, 'Projects retrieved successfully', { projects });
-    
+
+    response(res, 200, 'Projects retrieved successfully', { projects })
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message });
-    console.log(error);
-    next(error);
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
   }
-};
-
-
+}
 
 const getProjectById = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+    const projectId = req.params.id
+    if (!uuidValidate(projectId)) {
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
-    const project = await projectService.findProjectById(req.params.id)
+    const project = await projectService.findProjectById(projectId)
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
     response(res, 200, `${project.name} retrieved successfully`, { project })
   } catch (error) {
@@ -69,14 +67,15 @@ const createProject = async (req, res, next) => {
 
 const updateProject = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+    const projectId = req.params.id
+    if (!uuidValidate(projectId)) {
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
-    const [updated] = await projectService.updateProject(req.params.id, req.body)
+    const [updated] = await projectService.updateProject(projectId, req.body)
     if (!updated) {
-      return response(res, 404, `Projects with ID: ${req.params.id} not found`)
+      return response(res, 404, `Projects with ID: ${projectId} not found`)
     }
-    const updatedProject = await projectService.findProjectById(req.params.id)
+    const updatedProject = await projectService.findProjectById(projectId)
     response(res, 200, `${updatedProject.name} updated successfully`, { updatedProject })
   } catch (error) {
     response(res, 500, 'Internal Server Error', { error: error.message })
@@ -87,13 +86,14 @@ const updateProject = async (req, res, next) => {
 
 const deleteProject = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+    const projectId = req.params.id
+    if (!uuidValidate(projectId)) {
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
-    const project = await projectService.findProjectById(req.params.id)
-    const deleted = await projectService.deleteProject(req.params.id)
+    const project = await projectService.findProjectById(projectId)
+    const deleted = await projectService.deleteProject(projectId)
     if (!deleted) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
     response(res, 200, `${project.name} deleted successfully`)
   } catch (error) {
@@ -105,12 +105,13 @@ const deleteProject = async (req, res, next) => {
 
 const getProjectUsers = async (req, res, next) => {
   try {
-    if (!uuidValidate(req.params.id)) {
-      return response(res, 404, `Project with ID: ${req.params.id} not found`)
+    const projectId = req.params.id
+    if (!uuidValidate(projectId)) {
+      return response(res, 404, `Project with ID: ${projectId} not found`)
     }
-    const project = await projectService.findProjectUsers(req.params.id)
+    const project = await projectService.findProjectUsers(projectId)
     if (!project) {
-      return response(res, 404, `Project with ID: ${req.params.id} was not found`)
+      return response(res, 404, `Project with ID: ${projectId} was not found`)
     }
     if (!project.Users || project.Users.length === 0) {
       return response(res, 404, `No users found for ${project.name}`)
