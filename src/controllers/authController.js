@@ -7,10 +7,10 @@ const userService = require('../services/userService');
 
 // For firebase
 const admin = require('firebase-admin');
-const serviceAccount = require('../../keys/nexlink-trial-firebase-adminsdk-5ds6q-29156a9c92.json');
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.applicationDefault()
 });
+
 const auth = admin.auth();
 
 const login = async (req, res, next) => {
