@@ -27,7 +27,7 @@ const findProjectTasks = async (projectId) => {
 
 // Using TasksUsers model for many to many
 const findUserTasks = async (userId) => {
-  return Tasks.findAll({ where: { userId }, include: Tasks })
+  return TasksUsers.findAll({ where: { userId }, include: Tasks })
 }
 
 const isUserInTask = async (taskId, userId) => {
