@@ -1,6 +1,8 @@
 const httpServer = require('./app')
 const { connectDB, syncDatabase } = require('./models')
-const { PORT } = require('./config')
+const loadConfig = require('../config')
+const config = await loadConfig()
+const { PORT } = config
 const socketIO = require('socket.io')
 const { socketHandlers } = require('./controllers/chatController')
 

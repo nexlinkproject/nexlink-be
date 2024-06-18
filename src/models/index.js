@@ -1,8 +1,9 @@
 const { Sequelize } = require('sequelize')
-const { DB_HOST, DB_USER, DB_NAME } = require('../config')
-const { loadSecrets } = require('../utils/secretManager')
+const loadConfig = require('../config')
+const config = await loadConfig()
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = config
 
-const sequelize = new Sequelize(DB_NAME, DB_USER, loadSecrets("be-api-sql-password"), {
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'postgres'
 })
