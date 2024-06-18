@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { loadSecrets } = require('./utils/secretManager')
+const { loadSecrets } = require('../utils/secretManager')
 
 module.exports = {
   PORT: process.env.PORT,
