@@ -60,6 +60,19 @@ const findProjectUsers = async (id) => {
   return Projects.findByPk(id, { include: Users })
 }
 
+const findUserProjects = async (userId) => {
+  return await Projects.findAll({
+    include: [
+      {
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: []
+      }
+    ]
+  })
+}
+
 const isUserInProject = async (projectId, userId) => {
   const project = await Projects.findByPk(projectId, {
     include: {
@@ -96,5 +109,6 @@ module.exports = {
   findProjectUsers,
   addUserToProject,
   removeUserFromProject,
-  isUserInProject
+  isUserInProject,
+  findUserProjects
 }

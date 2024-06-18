@@ -124,6 +124,24 @@ const getProjectUsers = async (req, res, next) => {
   }
 }
 
+const getUserProjects = async (req, res, next) => {
+  try {
+    const { userId } = req.params
+    if (!uuidValidate(userId)) {
+      return response(res, 404, `User with ID: ${userId} not found`)
+    }
+    const projects = await projectService.findUserProjects(userId)
+    if (!projects || projects.length === 0) {
+      return response(res, 404, `No projects found for user with ID: ${userId}`)
+    }
+    response(res, 200, 'Projects retrieved successfully', { projects })
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
 const addUserToProject = async (req, res, next) => {
   try {
     const { projectId, userId } = req.params
@@ -178,4 +196,4 @@ const removeUserFromProject = async (req, res, next) => {
   }
 }
 
-module.exports = { getProjects, getProjectById, createProject, updateProject, deleteProject, getProjectUsers, addUserToProject, removeUserFromProject }
+module.exports = { getProjects, getProjectById, createProject, updateProject, deleteProject, getProjectUsers, addUserToProject, removeUserFromProject, getUserProjects }

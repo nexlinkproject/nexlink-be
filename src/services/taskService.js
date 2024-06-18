@@ -20,14 +20,21 @@ const deleteTask = async (id) => {
   return Tasks.destroy({ where: { id } })
 }
 
-// Using Tasks model for one to many
 const findProjectTasks = async (projectId) => {
   return Tasks.findAll({ where: { projectId } })
 }
 
-// Using TasksUsers model for many to many
 const findUserTasks = async (userId) => {
-  return TasksUsers.findAll({ where: { userId }, include: Tasks })
+  return await Tasks.findAll({
+    include: [
+      {
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: []
+      }
+    ]
+  })
 }
 
 const isUserInTask = async (taskId, userId) => {

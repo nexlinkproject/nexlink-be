@@ -23,12 +23,13 @@ const deleteGroupChat = async (groupId) => {
 
 const getAllGroups = async (page, take, userId) => {
   const offset = (page - 1) * take
-  const groups = await ChatsUsers.findAll({
-    where: { userId },
+  const groups = await Chats.findAll({
     include: [
       {
-        model: Chats,
-        include: [Users]
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: ['id', 'username', 'email']
       }
     ],
     offset,
