@@ -43,6 +43,10 @@ const Tasks = sequelize.define('Tasks', {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE'
   },
+  priority: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW

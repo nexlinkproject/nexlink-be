@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { authenticate } = require('../utils/middleware')
-const { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask } = require('../controllers/taskController')
+const { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks } = require('../controllers/taskController')
 
 router.get('/', authenticate, getTasks)
 router.get('/:id', authenticate, getTaskById)
@@ -12,5 +12,6 @@ router.get('/project/:projectId', authenticate, getProjectTasks)
 router.get('/user/:userId', authenticate, getUserTasks)
 router.post('/:taskId/users/:userId', authenticate, addUserToTask)
 router.delete('/:taskId/users/:userId', authenticate, removeUserFromTask)
+router.post('/transform_and_schedule', authenticate, transformAndScheduleTasks)
 
 module.exports = router

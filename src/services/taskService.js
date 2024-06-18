@@ -20,8 +20,16 @@ const deleteTask = async (id) => {
   return Tasks.destroy({ where: { id } })
 }
 
-const findProjectTasks = async (projectId) => {
-  return Tasks.findAll({ where: { projectId } })
+const findProjectTasks = async () => {
+  return await Tasks.findAll({
+    include: [
+      {
+        model: Users,
+        attributes: ['id']
+      }
+    ],
+    attributes: ['id', 'name', 'description', 'status', 'startDate', 'priority', 'projectId']
+  })
 }
 
 const findUserTasks = async (userId) => {

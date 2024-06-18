@@ -1,3 +1,4 @@
+const axios = require('axios')
 const taskService = require('../services/taskService')
 const userService = require('../services/userService')
 const projectService = require('../services/projectService')
@@ -184,4 +185,39 @@ const removeUserFromTask = async (req, res, next) => {
   }
 }
 
-module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask }
+const transformAndScheduleTasks = async (req, res, next) => {
+  try {
+    const tasks = await taskService.findProjectTasks()
+    if (tasks.length === 0) {
+      return response(res, 404, 'No tasks found')
+    }
+
+    // prepare the data for the ML endpoint
+    const tasksData = tasks.map(task => ({
+      taskId: task.id,
+      name: task.name,
+      description: task.description,
+      status: task.status,
+      startDate: task.startDate.toISOString().split('T')[0],
+      userId: task.Users.map(user => user.id),
+      priority: task.priority,
+      projectId: task.projectId
+    }))
+
+    // make a POST request to the FastAPI endpoint
+    const apiResponse = await axios.post(
+      'http://localhost:8000/transform_and_schedule',
+      { data: { tasks: tasksData } },
+      { headers: { Authorization: `Bearer ${req.token}`, 'Content-Type': 'application/json' } }
+    )
+
+    // respond with the transformed and scheduled data
+    response(res, 200, 'Tasks transformed and scheduled successfully', apiResponse.data)
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
+module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks }
