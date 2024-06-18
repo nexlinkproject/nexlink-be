@@ -9,7 +9,6 @@ const loadSecrets = async (secretName) => {
   })
 
   const payload = version.payload.data.toString('utf8')
-  console.log(payload)
   return payload
 }
 

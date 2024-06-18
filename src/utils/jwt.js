@@ -1,15 +1,15 @@
 const jwt = require('jsonwebtoken')
 const loadConfig = require('../config')
-const config = await loadConfig()
-const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = config
 
-const generateAccessToken = (user) => {
+const generateAccessToken = async (user) => {
+  const { JWT_ACCESS_SECRET } = await loadConfig()
   return jwt.sign({ userId: user.id }, JWT_ACCESS_SECRET, {
     expiresIn: '1y'
   })
 }
 
-const generateRefreshToken = (user, jti) => {
+const generateRefreshToken = async (user, jti) => {
+  const { JWT_REFRESH_SECRET } = await loadConfig()
   return jwt.sign(
     {
       userId: user.id,
@@ -22,9 +22,9 @@ const generateRefreshToken = (user, jti) => {
   )
 }
 
-const generateTokens = (user, jti) => {
-  const accessToken = generateAccessToken(user)
-  const refreshToken = generateRefreshToken(user, jti)
+const generateTokens = async (user, jti) => {
+  const accessToken = await generateAccessToken(user)
+  const refreshToken = await generateRefreshToken(user, jti)
 
   return {
     accessToken,

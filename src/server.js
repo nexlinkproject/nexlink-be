@@ -1,8 +1,5 @@
 const httpServer = require('./app')
-const { connectDB, syncDatabase } = require('./models')
-const loadConfig = require('../config')
-const config = await loadConfig()
-const { PORT } = config
+const { initializeDatabase, connectDB, syncDatabase } = require('./models')
 const socketIO = require('socket.io')
 const { socketHandlers } = require('./controllers/chatController')
 
@@ -12,8 +9,12 @@ socketHandlers(io)
 
 async function startServer () {
   try {
-    await connectDB()
-    await syncDatabase()
+    const { sequelize, ...models } = await initializeDatabase()
+    await connectDB(sequelize)
+    await syncDatabase(sequelize, models)
+
+    const config = await require('./config')()
+    const { PORT } = config
 
     httpServer.listen(PORT, '0.0.0.0', () => {
       console.log(`Server is running on: ${PORT}`)
