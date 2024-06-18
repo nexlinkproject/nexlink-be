@@ -10,8 +10,8 @@ socketHandlers(io)
 
 async function startServer () {
   try {
-    // const { loadSecrets } = require('./utils/secretManager')
-    // await loadSecrets();
+    const { loadSecrets } = require('./utils/secretManager')
+    await loadSecrets()
 
     await connectDB()
     await syncDatabase()

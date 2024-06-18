@@ -1,10 +1,10 @@
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager')
-const { GOOGLE_CLOUD_PROJECT, SECRET_MANAGER_ID } = require('../config')
+const { GOOGLE_CLOUD_PROJECT } = require('../config')
 
-const loadSecrets = async () => {
+const loadSecrets = async (secretName) => {
   const client = new SecretManagerServiceClient()
   const [version] = await client.accessSecretVersion({
-    name: `projects/${GOOGLE_CLOUD_PROJECT}/secrets/${SECRET_MANAGER_ID}/versions/latest`
+    name: `projects/${GOOGLE_CLOUD_PROJECT}/secrets/${secretName}/versions/latest`
   })
 
   const payload = version.payload.data.toString('utf8')
