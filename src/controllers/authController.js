@@ -5,7 +5,7 @@ const { response } = require('../utils/middleware')
 const authService = require('../services/authService')
 const userService = require('../services/userService')
 
-// For firebase
+// For firebases
 const admin = require('firebase-admin')
 admin.initializeApp({
   credential: admin.credential.applicationDefault()
