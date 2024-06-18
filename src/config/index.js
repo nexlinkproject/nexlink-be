@@ -3,7 +3,6 @@ const { loadSecrets } = require('../utils/secretManager')
 
 module.exports = {
   PORT: process.env.PORT,
-  GOOGLE_CLOUD_PROJECT: process.env.GOOGLE_CLOUD_PROJECT,
   DB_HOST: process.env.DB_HOST,
   DB_USER: process.env.DB_USER,
   DB_PASSWORD: loadSecrets("be-api-sql-password"),

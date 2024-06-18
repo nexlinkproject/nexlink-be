@@ -1,5 +1,6 @@
 const { SecretManagerServiceClient } = require('@google-cloud/secret-manager')
-const { GOOGLE_CLOUD_PROJECT } = require('../config')
+require('dotenv').config()
+const GOOGLE_CLOUD_PROJECT = process.env.GOOGLE_CLOUD_PROJECT
 
 const loadSecrets = async (secretName) => {
   const client = new SecretManagerServiceClient()
