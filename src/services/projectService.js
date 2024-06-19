@@ -110,5 +110,5 @@ module.exports = {
   addUserToProject,
   removeUserFromProject,
   isUserInProject,
-  findUserProjects
+  findUserProjects,
 }

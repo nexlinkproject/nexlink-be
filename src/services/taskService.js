@@ -20,6 +20,10 @@ const deleteTask = async (id) => {
   return Tasks.destroy({ where: { id } })
 }
 
+const findTaskUsers = async (id) => {
+  return Tasks.findByPk(id, { include: Users })
+}
+
 const findProjectTasks = async () => {
   return await Tasks.findAll({
     include: [
@@ -69,4 +73,4 @@ const removeUserFromTask = async (taskId, userId) => {
   throw new Error('Task or User not found')
 }
 
-module.exports = { findAllTasks, findTaskById, createTask, updateTask, deleteTask, findProjectTasks, findUserTasks, isUserInTask, addUserToTask, removeUserFromTask }
+module.exports = { findAllTasks, findTaskById, createTask, updateTask, deleteTask, findProjectTasks, findUserTasks, isUserInTask, addUserToTask, removeUserFromTask, findTaskUsers }

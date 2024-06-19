@@ -95,6 +95,27 @@ const deleteTask = async (req, res, next) => {
   }
 }
 
+const getTaskUsers = async (req, res, next) => {
+  try {
+    const taskId = req.params.id
+    if (!uuidValidate(taskId)) {
+      return response(res, 404, `Task with ID: ${taskId} not found`)
+    }
+    const task = await taskService.findProjectUsers(taskId)
+    if (!task) {
+      return response(res, 404, `Task with ID: ${taskId} was not found`)
+    }
+    if (!task.Users || task.Users.length === 0) {
+      return response(res, 404, `No users found for ${task.name}`)
+    }
+    response(res, 200, 'Task retrieved successfully', { task })
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
 const getProjectTasks = async (req, res, next) => {
   try {
     const { projectId } = req.params
@@ -220,4 +241,4 @@ const transformAndScheduleTasks = async (req, res, next) => {
   }
 }
 
-module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks }
+module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks, getTaskUsers }
