@@ -228,7 +228,7 @@ const transformAndScheduleTasks = async (req, res, next) => {
 
     // make a POST request to the FastAPI endpoint
     const apiResponse = await axios.post(
-      'https://nexlink-ml-api-hby6xvshwq-et.a.run.app/transform_and_schedule',
+      'https://nexlink-ml-api-hby6xvshwq-et.a.run.app/schedule',
       { data: { tasks: tasksData } },
       { headers: { Authorization: `Bearer ${req.token}`, 'Content-Type': 'application/json' } }
     )
