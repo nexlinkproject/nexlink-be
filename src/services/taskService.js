@@ -24,8 +24,13 @@ const findTaskUsers = async (id) => {
   return Tasks.findByPk(id, { include: Users })
 }
 
-const findProjectTasks = async () => {
+const findProjectTasks = async (projectId) => {
   return await Tasks.findAll({
+    where: [
+      {
+        projectId
+      }
+    ],
     include: [
       {
         model: Users,
