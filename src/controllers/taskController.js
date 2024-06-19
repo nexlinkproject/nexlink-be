@@ -208,7 +208,8 @@ const removeUserFromTask = async (req, res, next) => {
 
 const transformAndScheduleTasks = async (req, res, next) => {
   try {
-    const tasks = await taskService.findProjectTasks()
+    const { projectId } = req.params
+    const tasks = await taskService.findProjectTasks(projectId)
     if (tasks.length === 0) {
       return response(res, 404, 'No tasks found')
     }
@@ -227,7 +228,7 @@ const transformAndScheduleTasks = async (req, res, next) => {
 
     // make a POST request to the FastAPI endpoint
     const apiResponse = await axios.post(
-      'http://localhost:8000/transform_and_schedule',
+      'https://nexlink-ml-api-hby6xvshwq-et.a.run.app/transform_and_schedule',
       { data: { tasks: tasksData } },
       { headers: { Authorization: `Bearer ${req.token}`, 'Content-Type': 'application/json' } }
     )
@@ -241,4 +242,33 @@ const transformAndScheduleTasks = async (req, res, next) => {
   }
 }
 
-module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks, getTaskUsers }
+const sendFeedback = async (req, res, next) => {
+  try {
+    const tasks = req.body
+    if (tasks.length === 0) {
+      return response(res, 404, 'No tasks found')
+    }
+
+    // prepare the data for the ML feedback
+    const tasksData = tasks.map(task => [
+      task.description,
+      task.name
+    ])
+
+    // make a POST request to the FastAPI endpoint
+    const apiResponse = await axios.post(
+      'https://nexlink-ml-hby6xvshwq-et.a.run.app/',
+      { data: { tasks: tasksData } },
+      { headers: { Authorization: `Bearer ${req.token}`, 'Content-Type': 'application/json' } }
+    )
+
+    // respond with the transformed and scheduled data
+    response(res, 200, 'Tasks transformed and scheduled successfully', apiResponse.data)
+  } catch (error) {
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
+  }
+}
+
+module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks, getTaskUsers, sendFeedback }
