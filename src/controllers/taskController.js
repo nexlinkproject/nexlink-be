@@ -101,7 +101,7 @@ const getTaskUsers = async (req, res, next) => {
     if (!uuidValidate(taskId)) {
       return response(res, 404, `Task with ID: ${taskId} not found`)
     }
-    const task = await taskService.findProjectUsers(taskId)
+    const task = await taskService.findTaskUsers(taskId)
     if (!task) {
       return response(res, 404, `Task with ID: ${taskId} was not found`)
     }
