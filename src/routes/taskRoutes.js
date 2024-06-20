@@ -13,7 +13,7 @@ router.get('/project/:projectId', authenticate, getProjectTasks)
 router.get('/user/:userId', authenticate, getUserTasks)
 router.post('/:taskId/users/:userId', authenticate, addUserToTask)
 router.delete('/:taskId/users/:userId', authenticate, removeUserFromTask)
-router.post('/transform_and_schedule', authenticate, transformAndScheduleTasks)
+router.post('/schedule/:projectId', authenticate, transformAndScheduleTasks)
 router.post('/sendfeedback', authenticate, sendFeedback)
 
 module.exports = router
