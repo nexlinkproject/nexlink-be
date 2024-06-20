@@ -14,6 +14,6 @@ router.get('/user/:userId', authenticate, getUserTasks)
 router.post('/:taskId/users/:userId', authenticate, addUserToTask)
 router.delete('/:taskId/users/:userId', authenticate, removeUserFromTask)
 router.post('/schedule/:projectId', authenticate, transformAndScheduleTasks)
-router.post('/sendfeedback', authenticate, sendFeedback)
+router.post('/feedback/:projectId', authenticate, sendFeedback)
 
 module.exports = router

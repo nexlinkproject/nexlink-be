@@ -1,9 +1,12 @@
 const axios = require('axios')
+const { BigQuery } = require('@google-cloud/bigquery')
 const taskService = require('../services/taskService')
 const userService = require('../services/userService')
 const projectService = require('../services/projectService')
 const { response } = require('../utils/middleware')
 const { v4: uuidv4, validate: uuidValidate } = require('uuid')
+
+const bigQueryClient = new BigQuery()
 
 const getTasks = async (req, res, next) => {
   try {
@@ -218,13 +221,12 @@ const transformAndScheduleTasks = async (req, res, next) => {
     const tasksData = tasks.map(task => ({
       taskId: task.id,
       name: task.name,
-      description: task.description,
-      status: task.status,
       startDate: task.startDate.toISOString().split('T')[0],
-      userId: task.Users.map(user => user.id),
-      priority: task.priority,
-      projectId: task.projectId
+      userID: task.Users.map(user => user.id),
+      projectId: task.projectId,
+      deadline: task.endDate.toISOString().split('T')[0]
     }))
+    console.log(tasksData)
 
     // make a POST request to the FastAPI endpoint
     const apiResponse = await axios.post(
@@ -244,31 +246,33 @@ const transformAndScheduleTasks = async (req, res, next) => {
 
 const sendFeedback = async (req, res, next) => {
   try {
-    const tasks = req.body
-    if (tasks.length === 0) {
-      return response(res, 404, 'No tasks found')
+    const { projectId } = req.params;
+    if (!projectId) {
+      return response(res, 404, 'No projects found');
     }
 
-    // prepare the data for the ML feedback
-    const tasksData = tasks.map(task => [
-      task.description,
-      task.name
-    ])
+    const tasks = await taskService.findProjectTasks(projectId);
+    if (tasks.length === 0) {
+      return response(res, 404, 'No tasks found');
+    }
 
-    // make a POST request to the FastAPI endpoint
-    const apiResponse = await axios.post(
-      'https://nexlink-ml-hby6xvshwq-et.a.run.app/',
-      { data: { tasks: tasksData } },
-      { headers: { Authorization: `Bearer ${req.token}`, 'Content-Type': 'application/json' } }
-    )
+    // prepare the data for BigQuery
+    const tasksData = tasks.map(task => ({
+      label_task: task.description,
+      sentences: task.name
+    }));
 
-    // respond with the transformed and scheduled data
-    response(res, 200, 'Tasks transformed and scheduled successfully', apiResponse.data)
+    const datasetId = 'nexlink_dataset'; 
+    const tableId = 'feedback_data'; 
+
+    await bigQueryClient.dataset(datasetId).table(tableId).insert(tasksData);
+
+    response(res, 200, 'Feedback data uploaded successfully', tasksData);
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
-}
+};
 
 module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks, getTaskUsers, sendFeedback }

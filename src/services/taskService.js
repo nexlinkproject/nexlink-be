@@ -1,4 +1,4 @@
-const { Tasks, Users, TasksUsers } = require('../models')
+const { Tasks, Users, Projects, TasksUsers } = require('../models')
 
 const findAllTasks = async () => {
   return Tasks.findAll()
@@ -35,9 +35,14 @@ const findProjectTasks = async (projectId) => {
       {
         model: Users,
         attributes: ['id']
+      },
+      {
+        model: Projects,
+        attributes: ['deadline'],
+        as: "project"
       }
     ],
-    attributes: ['id', 'name', 'description', 'status', 'startDate', 'priority', 'projectId']
+    attributes: ['id', 'name', 'description', 'status', 'startDate', 'endDate', 'priority', 'projectId']
   })
 }
 
