@@ -131,14 +131,14 @@ const getUserProjects = async (req, res, next) => {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
 
-    const { startDate, endDate, status } = req.query
+    const { date , status } = req.query
 
     let projects
 
-    if (startDate && endDate && status) {
-      projects = await projectService.findUserProjectsByDateRangeAndStatus(userId, startDate, endDate, status)
-    } else if (startDate && endDate) {
-      projects = await projectService.findUserProjectsByDateRange(userId, startDate, endDate)
+    if (date && status) {
+      projects = await projectService.findUserProjectsByDateAndStatus(userId, date, status)
+    } else if (date) {
+      projects = await projectService.findUserProjectsByDate(userId, date)
     } else if (status) {
       projects = await projectService.findUserProjectsByStatus(userId, status)
     } else {

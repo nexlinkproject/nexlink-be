@@ -143,7 +143,21 @@ const getUserTasks = async (req, res, next) => {
     if (!uuidValidate(userId)) {
       return response(res, 404, `User with ID: ${userId} not found`)
     }
-    const tasks = await taskService.findUserTasks(userId)
+
+    const { date , status } = req.query
+
+    let tasks
+
+    if (date && status) {
+      tasks = await taskService.findUserTasksByDateAndStatus(userId, date, status)
+    } else if (date) {
+      tasks = await taskService.findUserTasksByDate(userId, date)
+    } else if (status) {
+      tasks = await taskService.findUserTasksByStatus(userId, status)
+    } else {
+      tasks = await taskService.findUserTasks(userId)
+    }
+
     if (!tasks || tasks.length === 0) {
       return response(res, 404, `No tasks found for user with ID: ${userId}`)
     }
@@ -260,8 +274,8 @@ const sendFeedback = async (req, res, next) => {
 
     // prepare the data for BigQuery
     const tasksData = tasks.map(task => ({
-      label_task: task.description,
-      sentences: task.name
+      label_task: task.name,
+      sentences: task.description
     }))
 
     const datasetId = 'nexlink_dataset'
