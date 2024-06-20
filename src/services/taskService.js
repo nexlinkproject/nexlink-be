@@ -39,7 +39,7 @@ const findProjectTasks = async (projectId) => {
       {
         model: Projects,
         attributes: ['deadline'],
-        as: "project"
+        as: 'project'
       }
     ],
     attributes: ['id', 'name', 'description', 'status', 'startDate', 'endDate', 'priority', 'projectId']

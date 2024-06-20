@@ -248,33 +248,33 @@ const transformAndScheduleTasks = async (req, res, next) => {
 
 const sendFeedback = async (req, res, next) => {
   try {
-    const { projectId } = req.params;
+    const { projectId } = req.params
     if (!projectId) {
-      return response(res, 404, 'No projects found');
+      return response(res, 404, 'No projects found')
     }
 
-    const tasks = await taskService.findProjectTasks(projectId);
+    const tasks = await taskService.findProjectTasks(projectId)
     if (tasks.length === 0) {
-      return response(res, 404, 'No tasks found');
+      return response(res, 404, 'No tasks found')
     }
 
     // prepare the data for BigQuery
     const tasksData = tasks.map(task => ({
       label_task: task.description,
       sentences: task.name
-    }));
+    }))
 
-    const datasetId = 'nexlink_dataset'; 
-    const tableId = 'feedback_data'; 
+    const datasetId = 'nexlink_dataset'
+    const tableId = 'feedback_data'
 
-    await bigQueryClient.dataset(datasetId).table(tableId).insert(tasksData);
+    await bigQueryClient.dataset(datasetId).table(tableId).insert(tasksData)
 
-    response(res, 200, 'Feedback data uploaded successfully', tasksData);
+    response(res, 200, 'Feedback data uploaded successfully', tasksData)
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message });
-    console.log(error);
-    next(error);
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.log(error)
+    next(error)
   }
-};
+}
 
 module.exports = { getTasks, getTaskById, createTask, updateTask, deleteTask, getProjectTasks, getUserTasks, addUserToTask, removeUserFromTask, transformAndScheduleTasks, getTaskUsers, sendFeedback }

@@ -37,42 +37,42 @@ const getUserById = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.id
     if (!uuidValidate(userId)) {
-      return response(res, 404, `User with ID: ${userId} not found`);
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
-    const { email } = req.body;
+    const { email } = req.body
 
-    const user = await userService.findUserById(userId);
+    const user = await userService.findUserById(userId)
     if (!user) {
-      return response(res, 404, `User with ID: ${userId} not found`);
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
 
-    const emailMatch = await userService.findUserByEmail(email);
+    const emailMatch = await userService.findUserByEmail(email)
     if (email && emailMatch && email !== user.email) {
-      return response(res, 400, 'Email is already used!');
+      return response(res, 400, 'Email is already used!')
     }
 
-    let updateData = req.body;
+    let updateData = req.body
 
     if (req.file) {
-      const publicUrl = await uploadToGoogleCloud(req.file, 'profile-pictures');
-      updateData = { ...updateData, profilePicture: publicUrl };
+      const publicUrl = await uploadToGoogleCloud(req.file, 'profile-pictures')
+      updateData = { ...updateData, profilePicture: publicUrl }
     }
 
-    const [updated] = await userService.updateUser(userId, updateData);
+    const [updated] = await userService.updateUser(userId, updateData)
     if (!updated) {
-      return response(res, 404, `User with ID: ${userId} not found`);
+      return response(res, 404, `User with ID: ${userId} not found`)
     }
 
-    const updatedUser = await userService.findUserById(userId);
-    response(res, 200, 'User updated successfully', { updatedUser });
+    const updatedUser = await userService.findUserById(userId)
+    response(res, 200, 'User updated successfully', { updatedUser })
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message });
-    console.error(error);
-    next(error);
+    response(res, 500, 'Internal Server Error', { error: error.message })
+    console.error(error)
+    next(error)
   }
-};
+}
 
 const deleteUser = async (req, res, next) => {
   try {

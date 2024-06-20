@@ -73,6 +73,65 @@ const findUserProjects = async (userId) => {
   })
 }
 
+const findUserProjectsByDateRange = async (userId, startDate, endDate) => {
+  return Projects.findAll({
+    include: [
+      {
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: []
+      }
+    ],
+    where: {
+      startDate: {
+        [Op.gte]: new Date(startDate)
+      },
+      endDate: {
+        [Op.lte]: new Date(endDate)
+      }
+    }
+  })
+}
+
+const findUserProjectsByStatus = async (userId, status) => {
+  return Projects.findAll({
+    include: [
+      {
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: []
+      }
+    ],
+    where: {
+      status
+    }
+  })
+}
+
+const findUserProjectsByDateRangeAndStatus = async (userId, startDate, endDate, status) => {
+  return Projects.findAll({
+    include: [
+      {
+        model: Users,
+        through: { attributes: [] },
+        where: { id: userId },
+        attributes: []
+      }
+    ],
+    where: {
+      startDate: {
+        [Op.gte]: new Date(startDate)
+      },
+      endDate: {
+        [Op.lte]: new Date(endDate)
+      },
+      status
+    }
+  })
+}
+
 const isUserInProject = async (projectId, userId) => {
   const project = await Projects.findByPk(projectId, {
     include: {
@@ -111,4 +170,7 @@ module.exports = {
   removeUserFromProject,
   isUserInProject,
   findUserProjects,
+  findUserProjectsByDateRangeAndStatus,
+  findUserProjectsByDateRange,
+  findUserProjectsByStatus
 }
