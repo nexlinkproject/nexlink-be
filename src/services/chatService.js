@@ -1,19 +1,28 @@
 const { Chats, ChatsUsers, Users } = require('../models')
 
 const createGroupChat = async (userId, groupName, members, chatType) => {
-  const chat = await Chats.create({
-    name: groupName,
-    creatorId: userId,
-    chatType
-  })
-  for (const memberId of members) {
-    await ChatsUsers.create({
+  try {
+    const chat = await Chats.create({
+      name: groupName,
+      userId,
+      chatType
+    });
+
+    // prepare associations
+    const memberAssociations = members.map(memberId => ({
       userId: memberId,
       chatId: chat.id
-    })
+    }));
+
+    // insert member
+    await ChatsUsers.bulkCreate(memberAssociations);
+
+    return chat;
+  } catch (error) {
+    console.error('Error creating group chat:', error);
+    throw error;
   }
-  return chat
-}
+};
 
 const deleteGroupChat = async (groupId) => {
   await Chats.destroy({
@@ -54,18 +63,25 @@ const getGroupChat = async (groupId, page, take) => {
 }
 
 const createChatByGroup = async (message, userId, groupId, chatType) => {
-  const chat = await Chats.create({
-    message,
-    userId,
-    groupId,
-    chatType
-  })
-  await ChatsUsers.create({
-    userId,
-    chatId: chat.id
-  })
-  return chat
-}
+  try {
+    const chat = await Chats.create({
+      message,
+      userId,
+      groupId,
+      chatType
+    });
+
+    await ChatsUsers.create({
+      userId,
+      chatId: chat.id
+    });
+
+    return chat;
+  } catch (error) {
+    console.error('Error creating chat by group:', error);
+    throw error;
+  }
+};
 
 module.exports = {
   createGroupChat,
