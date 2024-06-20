@@ -37,19 +37,38 @@ const getProjects = async (req, res, next) => {
 
 const getProjectById = async (req, res, next) => {
   try {
-    const projectId = req.params.id
+    const projectId = req.params.id;
+    const { startDate, endDate, status } = req.query;
+
     if (!uuidValidate(projectId)) {
-      return response(res, 404, `Project with ID: ${projectId} not found`)
+      return response(res, 404, `Project with ID: ${projectId} not found`);
     }
-    const project = await projectService.findProjectById(projectId)
+
+    let project;
+
+    if (startDate && endDate && status) {
+      // Retrieve project by ID with filtering by startDate, endDate, and status
+      project = await projectService.findProjectByIdAndDateRangeAndStatus(projectId, startDate, endDate, status);
+    } else if (startDate && endDate) {
+      // Retrieve project by ID with filtering by startDate and endDate
+      project = await projectService.findProjectByIdAndDateRange(projectId, startDate, endDate);
+    } else if (status) {
+      // Retrieve project by ID with filtering by status
+      project = await projectService.findProjectByIdAndStatus(projectId, status);
+    } else {
+      // Retrieve project by ID without any filtering
+      project = await projectService.findProjectById(projectId);
+    }
+
     if (!project) {
-      return response(res, 404, `Project with ID: ${projectId} not found`)
+      return response(res, 404, `Project with ID: ${projectId} not found`);
     }
-    response(res, 200, `${project.name} retrieved successfully`, { project })
+
+    response(res, 200, `${project.name} retrieved successfully`, { project });
   } catch (error) {
-    response(res, 500, 'Internal Server Error', { error: error.message })
-    console.log(error)
-    next(error)
+    response(res, 500, 'Internal Server Error', { error: error.message });
+    console.log(error);
+    next(error);
   }
 }
 
