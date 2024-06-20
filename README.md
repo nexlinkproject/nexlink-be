@@ -5,6 +5,8 @@
 ## Endpoint
 Default Url: `"https://nexlink-be-hby6xvshwq-et.a.run.app"`
 
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://god.gw.postman.com/run-collection/36383502-77ee7788-685f-4309-a9bd-11d7f191a61d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D36383502-77ee7788-685f-4309-a9bd-11d7f191a61d%26entityType%3Dcollection%26workspaceId%3De4968287-f25c-49a9-ad0b-9453577b81c3#?env%5BNew%20Environment%5D=W10=)
+
 | Endpoint | Method | Description |
 | -- | -- | -- |
 | Authentication Endpoints |
