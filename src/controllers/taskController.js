@@ -274,8 +274,8 @@ const sendFeedback = async (req, res, next) => {
 
     // prepare the data for BigQuery
     const tasksData = tasks.map(task => ({
-      label_task: task.description,
-      sentences: task.name
+      label_task: task.name,
+      sentences: task.description
     }))
 
     const datasetId = 'nexlink_dataset'
