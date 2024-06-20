@@ -221,12 +221,14 @@ const transformAndScheduleTasks = async (req, res, next) => {
     const tasksData = tasks.map(task => ({
       taskId: task.id,
       name: task.name,
+      description: task.description,
+      status: task.status,
       startDate: task.startDate.toISOString().split('T')[0],
       userID: task.Users.map(user => user.id),
+      priority: task.priority,
       projectId: task.projectId,
-      deadline: task.endDate.toISOString().split('T')[0]
+      deadline: task.project.deadline.toISOString().split('T')[0]
     }))
-    console.log(tasksData)
 
     // make a POST request to the FastAPI endpoint
     const apiResponse = await axios.post(
