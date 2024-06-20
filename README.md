@@ -1,8 +1,9 @@
 # Nexlink Backend API
 
+![Architecture API](https://github.com/nexlinkproject/nexlink-be/blob/main/architecture.png?raw=true)
 
 ## Endpoint
-Default Url: `"coming soon"`
+Default Url: `"https://nexlink-be-hby6xvshwq-et.a.run.app"`
 
 | Endpoint | Method | Description |
 | -- | -- | -- |
@@ -26,8 +27,8 @@ Default Url: `"coming soon"`
 | `/projects/{id}` | PUT | Update a specific project by id |
 | `/projects/{id}` | DELETE | Delete a specific project by id |
 | `/projects/{id}/users` | GET | Get users associated with a project |
-| `/projects/{id}/users` | POST | Add users to a project |
-| `/projects/{id}/users/{userID}` | DELETE | Remove a user from a project |
+| `/projects/{projectId}/users/{userId}` | POST | Add user to a project |
+| `/projects/{projectId}/users/{userID}` | DELETE | Remove a user from a project |
 | Task Endpoints |
 | -- | -- | -- |
 | `/tasks` | GET | Get all tasks |
@@ -35,12 +36,21 @@ Default Url: `"coming soon"`
 | `/tasks/{id}` | GET | Get a specific task by id |
 | `/tasks/{id}` | PUT | Update a specific task by id |
 | `/tasks/{id}` | DELETE | Delete a specific task by id |
-| `/tasks/project/:projectId` | GET | Get tasks for a specific project |
+| `/tasks/project/{projectId}` | GET | Get tasks for a specific project |
 | `/tasks/user/:userId` | GET | Get tasks assigned to a specific user |
-| Schedule Endpoints |
+| `/tasks/{taskId}/users/{userId}` | POST | Add user to a task |
+| `/tasks/{taskId}/users/{userId}` | DELETE | Remove user from a task |
+| Chat Endpoints |
 | -- | -- | -- |
-| `/projects/:projectId/generate-schedule` | POST | Create a schedule for a specific project|
-| `/projects/:projectId/update-schedule` | PUT | Update a schedule for a specific project|
+| `/chats` | GET | Get all group chat |
+| `/chats/groups` | POST | Create group chat |
+| `/chats/groups/{groupId}` | DELETE | Delete group chat |
+| `/chats/groups/{groupId}` | GET | Get a group chat |
+| `/chats/groups/{groupId}/message` | POST | Send a message |
+| Schedule/ML Endpoints |
+| -- | -- | -- |
+| `/tasks/schedule/{projectId}` | POST | Send request to ML for transform schedule |
+| `/tasks/feedback/{projectId}` | POST | Store ML data feedback |
 
 ## Auth Routes
 
@@ -107,7 +117,9 @@ Status: 200
     "status": "success",
     "message": "Login successful",
     "data": {
-        "token": "JWT_TOKEN"
+        "userId": "id",
+        "fullName": "John Smith",
+        "accessToken": "JWT_TOKEN"
     }
 }
 
@@ -181,7 +193,7 @@ Status: 200
 ```json
 {
     "status": "success",
-    "message": "Users retrieved successfully",
+    "message": "All users retrieved successfully",
     "data": {
         "users": [
             {
@@ -235,7 +247,7 @@ Status: 200
 
 ```
 
-### GET User
+### GET User By Id
 
 **Endpoint**
 
@@ -250,13 +262,6 @@ Status: 200
 
 - id: `<integer>`
 
-**Body Parameters**
-
-- username: `<string>`
-- email: `<string>`
-- password: `<string>`
-- fullName: `<string>`
-
 **Example Response**
 
 Status: 200
@@ -264,7 +269,7 @@ Status: 200
 ```json
 {
     "status": "success",
-    "message": "User updated successfully",
+    "message": "User retrieved successfully",
     "data": {
         "user": {
             "id": 1,
@@ -542,7 +547,7 @@ Status: 200
 
 **Endpoint**
 
-`POST /projects/:id/users`
+`POST /projects/:projectId/users/:userId`
 
 **Headers**
 
@@ -551,10 +556,7 @@ Status: 200
 
 **Path  Parameters**
 
-- id: `<integer>`
-
-**Body Parameters**
-
+- projectId: `<integer>`
 - userId: `<integer>`
 
 **Example Response**
@@ -582,10 +584,6 @@ Status: 201
 
 - id: `<integer>`
 - userId: `<integer>`
-
-**Body Parameters**
-
-- page: `<add>`
 
 **Example Response**
 
@@ -878,6 +876,261 @@ Status: 200
             }
             // more tasks...
         ]
+    }
+}
+```
+
+### Add User to Task
+
+**Endpoint**
+
+`POST /tasks/:taskId/users/:userId`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+- Content-Type: `<application/json>`
+
+**Path  Parameters**
+
+- taskId: `<integer>`
+- userId: `<integer>`
+
+**Example Response**
+
+Status: 201
+
+```json
+{
+    "status": "success",
+    "message": "User added to task successfully"
+}
+```
+
+### Remove User from Task
+
+**Endpoint**
+
+`DELETE /tasks/:taskId/users/:userId`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Path  Parameters**
+
+- taskId: `<integer>`
+- userId: `<integer>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "User removed from project successfully"
+}
+```
+## Chat Routes
+
+### Get All Groups
+
+**Endpoint**
+
+`GET /chats`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Query**
+
+- page=`<integer>`
+- take=`<integer>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "Your Group Chat with the latest chat has been retrieved",
+    "data": [
+        {
+            "id": 1,
+            "name": "Project Team",
+            "userId": 1,
+            "chatType": "group",
+            "createdAt": "2024-06-24T12:00:00.000Z",
+            "updatedAt": "2024-06-24T12:00:00.000Z",
+            "Users": [
+                {
+                    "id": 2,
+                    "username": "user2",
+                    "email": "user2@example.com"
+                },
+                {
+                    "id": 3,
+                    "username": "user3",
+                    "email": "user3@example.com"
+                }
+            ]
+        }
+        // more groups...
+    ]
+}
+```
+
+### Create Group Chat
+
+**Endpoint**
+
+`POST /chats/groups`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Body Parameters**
+
+- groupName `<string>`
+- members `<array or integer>`
+- chatType `<string>`
+
+**Example Response**
+
+Status: 201
+
+```json
+{
+    "status": "success",
+    "message": "New Group Chat has been created",
+    "data": {
+        "id": 1,
+        "name": "Project Team",
+        "userId": 1,
+        "chatType": "group",
+        "createdAt": "2024-06-24T12:00:00.000Z",
+        "updatedAt": "2024-06-24T12:00:00.000Z"
+    }
+}
+```
+
+### Delete Group Chat
+
+**Endpoint**
+
+`DELETE /chats/groups/:groupId`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Parameters**
+
+- groupName `<string>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "Group Chat with id 1 has been deleted"
+}
+```
+
+### Get Group Chat
+
+**Endpoint**
+
+`GET /chats/groups/:groupId`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Parameters**
+
+- groupId `<string>`
+
+**Query**
+
+- page=`<integer>`
+- take=`<integer>`
+
+**Example Response**
+
+Status: 200
+
+```json
+{
+    "status": "success",
+    "message": "GroupChat with id 1 has been retrieved",
+    "data": [
+        {
+            "id": 1,
+            "name": "Project Team",
+            "userId": 1,
+            "chatType": "group",
+            "createdAt": "2024-06-24T12:00:00.000Z",
+            "updatedAt": "2024-06-24T12:00:00.000Z",
+            "Users": [
+                {
+                    "id": 2,
+                    "username": "user2",
+                    "email": "user2@example.com"
+                },
+                {
+                    "id": 3,
+                    "username": "user3",
+                    "email": "user3@example.com"
+                }
+            ]
+        }
+        // more messages...
+    ]
+}
+```
+
+### Send Message in Group Chat
+
+**Endpoint**
+
+`POST /chats/groups/:groupId/messages`
+
+**Headers**
+
+- Authorization: Bearer `<JWT_TOKEN>`
+
+**Parameters**
+
+- groupId `<string>`
+
+**Body Parameters**
+
+- message `<string>`
+- chatType `<string>`
+
+**Example Response**
+
+Status: 201
+
+```json
+{
+    "status": "success",
+    "message": "New message has been created",
+    "data": {
+        "id": 10,
+        "message": "Hello Team!",
+        "userId": 1,
+        "groupId": 1,
+        "chatType": "group",
+        "createdAt": "2024-06-24T12:05:00.000Z",
+        "updatedAt": "2024-06-24T12:05:00.000Z"
     }
 }
 ```
